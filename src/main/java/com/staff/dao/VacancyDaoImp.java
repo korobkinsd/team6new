@@ -45,7 +45,7 @@ public class VacancyDaoImp implements VacancyDao {
       cq.select(root);
 
        List<Predicate> predicates = new ArrayList<>();
-       if (vacancy.getId()!= null&vacancy.getId()!=0.0) {
+       if (vacancy.getId()!= null) {
            predicates.add(cb.equal(root.get(Vacancy_.ID),vacancy.getId()));
        }
       /* if (vacancy.getIdDeveloper()!= null&vacancy.getIdDeveloper()!=0.0) {
