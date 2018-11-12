@@ -33,7 +33,7 @@ public class VacancyDaoImp implements VacancyDao {
 
    @Override
    public Vacancy get(long id) {
-      return sessionFactory.getCurrentSession().get(Vacancy.class, id);
+       return sessionFactory.getCurrentSession().get(Vacancy.class, id);
    }
 
    @Override
