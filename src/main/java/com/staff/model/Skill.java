@@ -39,22 +39,22 @@ public class Skill {
       this.name = name;
    }
 
-   @Override
-   public final boolean equals(Object o) {
-      if (this == o) {
-         return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-         return false;
-      }
-      Skill skill = (Skill) o;
-      return name == skill.name;
-   }
-
-   @Override
-   public final int hashCode() {
-      return Objects.hash(name);
-   }
+//   @Override
+//   public final boolean equals(Object o) {
+//      if (this == o) {
+//         return true;
+//      }
+//      if (o == null || getClass() != o.getClass()) {
+//         return false;
+//      }
+//      Skill skill = (Skill) o;
+//      return name == skill.name;
+//   }
+//
+//   @Override
+//   public final int hashCode() {
+//      return Objects.hash(name);
+//   }
 
    @Override
    public final String toString() {
