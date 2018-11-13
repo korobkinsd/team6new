@@ -1,7 +1,9 @@
 package com.staff.controller;
 
 import com.staff.dao.UserDao;
+import com.staff.metamodel.User_;
 import com.staff.model.User;
+import com.staff.util.filtering.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +12,17 @@ import java.util.List;
 
 @RestController
 public class UserController {
+
     @Autowired
     private UserDao userDao;
+
+    public void setUserDao(UserDao userDao){
+        this.userDao = userDao;
+    }
+
+    public UserDao getUserDao(){
+        return this.userDao;
+    }
 
     @PostMapping("/user")
     public ResponseEntity<?> save(@RequestBody User user) {
@@ -26,16 +37,25 @@ public class UserController {
     }
     @GetMapping("/user")
     public ResponseEntity<List<User>> list(@RequestParam(value = "email", defaultValue = "")String email,
-                                              @RequestParam(value = "name", defaultValue = "0")String name,
-                                              @RequestParam(value = "surname", defaultValue = "0")String surname,
-                                              @RequestParam(value = "listUserState", defaultValue = "")List<String> listUserState
+                                              @RequestParam(value = "name", defaultValue = "")String name,
+                                              @RequestParam(value = "surname", defaultValue = "")String surname,
+                                              @RequestParam(value = "listUserState", defaultValue = "")List<String> listUserState,
+                                              @RequestParam(value = "sortColumnName", defaultValue = User_.NAME)String sortColumnName,
+                                              @RequestParam(value = "order", defaultValue = "ASC")String order,
+                                              @RequestParam(value = "page", defaultValue = "1")Integer page,
+                                              @RequestParam(value = "pagesize", defaultValue = "10")Integer pagesize
     ) {
-        User userFilter =new User();
-        userFilter.setEmail(email);
-        userFilter.setName(name);
-        userFilter.setSurname(surname);
-        userFilter.setListUserStatus(listUserState);
-        List<User> users = userDao.list(userFilter);
+        UserUtil userUtil =new UserUtil();
+        userUtil.email = email;
+        userUtil.name = name;
+        userUtil.surname = surname;
+        userUtil.listUserStatus = listUserState;
+        userUtil.sortColumnName = sortColumnName;
+        userUtil.order = order;
+        userUtil.page = page;
+        userUtil.pagesize = pagesize;
+
+        List<User> users = userDao.list(userUtil);
         return ResponseEntity.ok().body(users);
     }
 

@@ -2,6 +2,7 @@ package com.staff.dao;
 
 import com.staff.metamodel.User_;
 import com.staff.model.User;
+import com.staff.util.filtering.UserUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -33,7 +34,7 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public List<User> list(User user) {
+    public List<User> list(UserUtil userUtil) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<User> cq = cb.createQuery(User.class);
@@ -42,20 +43,20 @@ public class UserDaoImp implements UserDao {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        String email = user.getEmail();
+        String email = userUtil.email;
         if (email!=null && !email.equals("") ) {
             predicates.add( cb.like(cb.lower(root.<String>get(User_.EMAIL)),"%"+email.toLowerCase()+"%"));
         }
-        String name = user.getName();
+        String name = userUtil.name;
         if (name!=null && !name.equals("") ) {
-            predicates.add( cb.like(cb.lower(root.<String>get(User_.NAME)),"%"+email.toLowerCase()+"%"));
+            predicates.add( cb.like(cb.lower(root.<String>get(User_.NAME)),"%"+name.toLowerCase()+"%"));
         }
-        String surname = user.getSurname();
+        String surname = userUtil.surname;
         if (surname!=null && !surname.equals("") ) {
-            predicates.add( cb.like(cb.lower(root.<String>get(User_.SURNAME)),"%"+email.toLowerCase()+"%"));
+            predicates.add( cb.like(cb.lower(root.<String>get(User_.SURNAME)),"%"+surname.toLowerCase()+"%"));
         }
 
-        List<String> listUserStatus = user.getListUserStatus();
+        List<String> listUserStatus = userUtil.listUserStatus;
         if (listUserStatus!=null && listUserStatus.size() > 0) {
             predicates.add(root.get(User_.USER_STATE).in(listUserStatus));
         }
@@ -66,7 +67,15 @@ public class UserDaoImp implements UserDao {
 
                 ));
 
+        if (userUtil.order.toUpperCase().equals("ASC")){
+            cq.orderBy(cb.asc(root.get(userUtil.sortColumnName)));
+        }else{
+            cq.orderBy(cb.desc(root.get(userUtil.sortColumnName)));
+        }
+
         Query<User> query = session.createQuery(cq);
+        query.setFirstResult((userUtil.page-1)*userUtil.pagesize+1);
+        query.setMaxResults(userUtil.pagesize);
 
         return query.getResultList();
     }

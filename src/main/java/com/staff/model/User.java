@@ -14,7 +14,7 @@ public class User {
     private String name;
     private String surname;
 
-    private Serializable userState;
+    private String userState;
     /*private Collection<Interviewfeedback> interviewfeedbacksById;
     private Collection<Userroles> userrolesById;
     private Collection<Vacancy> vacanciesById;*/
@@ -74,11 +74,11 @@ public class User {
 
     @Basic
     @Column(name = "userState")
-    public Serializable getUserState() {
+    public String getUserState() {
         return userState;
     }
 
-    public void setUserState(Serializable userState) {
+    public void setUserState(String userState) {
         this.userState = userState;
     }
 
