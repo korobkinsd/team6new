@@ -45,15 +45,15 @@ public class UserDaoImp implements UserDao {
 
         String email = userUtil.email;
         if (email!=null && !email.equals("") ) {
-            predicates.add( cb.like(cb.lower(root.<String>get(User_.EMAIL)),"%"+email.toLowerCase()+"%"));
+            predicates.add( cb.like(cb.lower(root.get(User_.EMAIL)),"%"+email.toLowerCase()+"%"));
         }
         String name = userUtil.name;
         if (name!=null && !name.equals("") ) {
-            predicates.add( cb.like(cb.lower(root.<String>get(User_.NAME)),"%"+name.toLowerCase()+"%"));
+            predicates.add( cb.like(cb.lower(root.get(User_.NAME)),"%"+name.toLowerCase()+"%"));
         }
         String surname = userUtil.surname;
         if (surname!=null && !surname.equals("") ) {
-            predicates.add( cb.like(cb.lower(root.<String>get(User_.SURNAME)),"%"+surname.toLowerCase()+"%"));
+            predicates.add( cb.like(cb.lower(root.get(User_.SURNAME)),"%"+surname.toLowerCase()+"%"));
         }
 
         List<String> listUserStatus = userUtil.listUserStatus;

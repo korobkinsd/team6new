@@ -3,7 +3,6 @@ package com.staff.model;
 
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 
 @Entity
 @Table(name = "vacancy", schema = "team6")

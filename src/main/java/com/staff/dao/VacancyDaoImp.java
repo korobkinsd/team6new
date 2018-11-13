@@ -62,7 +62,7 @@ public class VacancyDaoImp implements VacancyDao {
        }
        if (!vacancy.getPosition().equals("")&vacancy.getPosition()!=null ) {
            predicates.add( cb.like(
-                   cb.lower(root.<String>get(Vacancy_.POSITION)),"%"+vacancy.getPosition().toLowerCase()+"%"));
+                   cb.lower(root.get(Vacancy_.POSITION)),"%"+vacancy.getPosition().toLowerCase()+"%"));
        }
        if (!vacancy.getState().equals("")&vacancy.getState()!=null) {
            predicates.add(cb.equal(root.get(Vacancy_.STATE),vacancy.getState()));

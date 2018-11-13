@@ -2,7 +2,6 @@ package com.staff.metamodel;
 
 import com.staff.model.Vacancy;
 
-import javax.persistence.metamodel.MapAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 

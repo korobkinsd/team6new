@@ -1,19 +1,20 @@
 package com.staff.dao;
 
 import com.staff.model.Skill;
+import com.staff.util.filtering.TrashUtil;
 
 import java.util.List;
 
 public interface SkillDao {
 
-   long save(Skill skill);
+   String save(Skill skill);
 
-   Skill get(long id);
+   Skill get(String name);
 
-   List<Skill> list();
+   List<Skill> list(TrashUtil trashUtil);
 
-   void update(long id, Skill skill);
+   void update(String name, Skill skill);
 
-   void delete(long id);
+   void delete(String name);
 
 }

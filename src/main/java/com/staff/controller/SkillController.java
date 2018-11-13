@@ -1,7 +1,9 @@
 package com.staff.controller;
 
+import com.staff.dao.SkillDao;
 import com.staff.model.Skill;
-import com.staff.service.SkillService;
+import com.staff.model.Skill_;
+import com.staff.util.filtering.TrashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,42 +12,56 @@ import java.util.List;
 
 @RestController
 public class SkillController {
-
+   
    @Autowired
-   private SkillService skillService;
+   private SkillDao skillDao;
 
-   /*---Add new skill---*/
+   public void setSkillDao(SkillDao skillDao){
+      this.skillDao = skillDao;
+   }
+
+   public SkillDao getSkillDao(){
+      return this.skillDao;
+   }
+
    @PostMapping("/skill")
    public ResponseEntity<?> save(@RequestBody Skill skill) {
-      long id = skillService.save(skill);
-      return ResponseEntity.ok().body("New Skill has been saved with ID:" + id);
+      String name = skillDao.save(skill);
+      return ResponseEntity.ok().body("New Skill has been saved:" + name);
    }
 
-   /*---Get a skill by id---*/
-   @GetMapping("/skill/{id}")
-   public ResponseEntity<Skill> get(@PathVariable("id") long id) {
-      Skill skill = skillService.get(id);
+   @GetMapping("/skill/{name}")
+   public ResponseEntity<Skill> get(@PathVariable("name") String name) {
+      Skill skill = skillDao.get(name);
       return ResponseEntity.ok().body(skill);
    }
-
-   /*---get all skills---*/
    @GetMapping("/skill")
-   public ResponseEntity<List<Skill>> list() {
-      List<Skill> skills = skillService.list();
+   public ResponseEntity<List<Skill>> list(@RequestParam(value = "name", defaultValue = "")String name,
+                                          @RequestParam(value = "sortColumnName", defaultValue = Skill_.NAME)String sortColumnName,
+                                          @RequestParam(value = "order", defaultValue = "ASC")String order,
+                                          @RequestParam(value = "page", defaultValue = "1")Integer page,
+                                          @RequestParam(value = "pagesize", defaultValue = "5")Integer pagesize
+   ) {
+      TrashUtil trashUtil =new TrashUtil();
+      trashUtil.name = name;
+      trashUtil.sortColumnName = sortColumnName;
+      trashUtil.order = order;
+      trashUtil.page = page;
+      trashUtil.pagesize = pagesize;
+
+      List<Skill> skills = skillDao.list(trashUtil);
       return ResponseEntity.ok().body(skills);
    }
 
-   /*---Update a skill by id---*/
-   @PutMapping("/skill/{id}")
-   public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Skill skill) {
-      skillService.update(id, skill);
+   @PutMapping("/skill/{name}")
+   public ResponseEntity<?> update(@PathVariable("name") String name, @RequestBody Skill skill) {
+      skillDao.update(name, skill);
       return ResponseEntity.ok().body("Skill has been updated successfully.");
    }
 
-   /*---Delete a skill by id---*/
-   @DeleteMapping("/skill/{id}")
-   public ResponseEntity<?> delete(@PathVariable("id") long id) {
-      skillService.delete(id);
+   @DeleteMapping("/skill/{name}")
+   public ResponseEntity<?> delete(@PathVariable("name") String name) {
+      skillDao.delete(name);
       return ResponseEntity.ok().body("Skill has been deleted successfully.");
    }
 }

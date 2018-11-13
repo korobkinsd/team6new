@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserControllerTest {
 
-    UserController controller;
+    private UserController controller;
 
     @Before
     public void setUp() {
@@ -38,7 +37,7 @@ public class UserControllerTest {
                 userUtil.listUserStatus, userUtil.sortColumnName, userUtil.order, userUtil.page, userUtil.pagesize);
 
         assertEquals(users.getBody().size(), 1);
-        assertEquals(users.getBody().get(0), user);
+        assertEquals(users.getBody().get(1), user);
     }
 
     private UserUtil generateUser() {

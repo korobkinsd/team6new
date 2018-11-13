@@ -2,7 +2,6 @@ package com.staff.controller;
 
 import com.staff.model.Vacancy;
 import com.staff.service.VacancyService;
-import com.staff.service.VacancyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

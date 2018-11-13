@@ -1,6 +1,5 @@
 package com.staff.dao;
 
-import com.staff.model.Skill;
 import com.staff.model.Vacancy;
 
 import java.util.List;

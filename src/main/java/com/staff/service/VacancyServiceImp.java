@@ -1,7 +1,6 @@
 package com.staff.service;
 
 import com.staff.dao.VacancyDao;
-import com.staff.dao.VacancyDao;
 import com.staff.model.Vacancy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
