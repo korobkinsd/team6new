@@ -10,7 +10,7 @@ public interface VacancyDao {
 
    Vacancy get(long id);
 
-   List<Vacancy> list(Vacancy vacancy);
+   List<Vacancy> list(Vacancy vacancy, int pageNumber, int pageSize);
 
    void update(long id, Vacancy vacancy);
 
