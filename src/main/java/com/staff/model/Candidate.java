@@ -77,8 +77,8 @@ public class Candidate {   // implements Serializable
     @Transient
     private Collection<ContactDetails> contactDetailsList;
 
-    @OneToMany( mappedBy = "contactDetailsByIdCandidate" )
-    @JoinColumn( name = "id", referencedColumnName = "idCandidate")
+    @OneToMany( mappedBy = "CANDIDATE" )
+    @JoinColumn( name = "ID", referencedColumnName = "CANDIDATE_ID")
     private Collection<ContactDetails> getContactDetailsById() {
         return this.contactDetailsList;
     };

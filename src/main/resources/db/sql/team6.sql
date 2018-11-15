@@ -1,4 +1,4 @@
-drop schema `team6`;
+/*drop schema `team6`;*/
 
 CREATE SCHEMA `team6` ;
 
@@ -156,14 +156,13 @@ insert into CANDIDATE (`NAME`, `SURNAME`, `BIRTHDAY`, `SALARY`, `CANDIDATE_STATE
 
 create table if not exists CONTACT_DETAILS
 ( `CANDIDATE_ID` int not null
-, `CONTACT_TYPE` enum ('Mobile phone','E-mail','Address')
-, `CONTACT_DETAILS` varchar(1000)
+, `CONTACT_TYPE` enum ('Mobile phone','E-mail','Address') not null
+, `CONTACT_DETAILS` varchar(1000) not null
 , index `contactDetails_I01` (`CANDIDATE_ID`)
 , index `contactDetails_I02` (`CONTACT_TYPE`)
 );
 
 alter table CONTACT_DETAILS add constraint contactDetailsFK_candidate foreign key (CANDIDATE_ID) references `CANDIDATE`(ID) on delete cascade on update cascade;
-
 
 insert into CONTACT_DETAILS (`CANDIDATE_ID`, `CONTACT_TYPE`, `CONTACT_DETAILS`)
 values (
@@ -249,15 +248,14 @@ create table if not exists VACANCY
 ( `ID` int not null AUTO_INCREMENT
 , `POSITION` varchar(1000)
 , `DEVELOPER_ID` int not null
-, `SALARY_FROM` decimal(10,2) check(`SALARY_FROM`>=0)
-, `SALARY_TO` decimal(10,2) check(`SALARY_TO`>=0)
-, `VACANCY_STATE` enum ('Active','Archive')
-, `EXPERIENCE_YEARS_REQUIRE` decimal (10,2) check(`EXPERIENCE_YEARS_REQUIRE` > 0)
+, `SALARY_FROM` decimal(10,2) not null check(`SALARY_FROM`>=0)
+, `SALARY_TO` decimal(10,2) not null check(`SALARY_TO`>=0)
+, `VACANCY_STATE` enum ('Active','Archive') not null
+, `EXPERIENCE_YEARS_REQUIRE` decimal (10,2) not null check(`EXPERIENCE_YEARS_REQUIRE` > 0)
 , primary key (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2001;
 
 alter table VACANCY add constraint vacancyFK_developer foreign key (DEVELOPER_ID) references `USER`(ID) on delete cascade on update cascade;
-
 
 create table if not exists VACANCY_REQUIREMENT
 ( `VACANCY_ID` int not null

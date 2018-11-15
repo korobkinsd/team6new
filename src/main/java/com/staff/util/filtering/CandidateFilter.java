@@ -24,6 +24,14 @@ public class CandidateFilter {
 
     private Double salaryTo;
 
+    private String sortColumnName;
+
+    private String order;
+
+    private Integer page;
+
+    private Integer pagesize;
+
     private List<Candidate.CandidateState> candidateStates;
 
     public final String getName() {
@@ -132,6 +140,38 @@ public class CandidateFilter {
 
     public final void setCandidateStates(List<Candidate.CandidateState> candidateStates) {
         this.candidateStates = candidateStates;
+    }
+
+    public String getSortColumnName() {
+        return sortColumnName;
+    }
+
+    public void setSortColumnName(String sortColumnName) {
+        this.sortColumnName = sortColumnName;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Integer getPagesize() {
+        return pagesize;
+    }
+
+    public void setPagesize(Integer pagesize) {
+        this.pagesize = pagesize;
     }
 
     @Override

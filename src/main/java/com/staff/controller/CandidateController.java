@@ -33,7 +33,11 @@ public class CandidateController {
                                            @RequestParam(value = "birthdayTo", defaultValue = "")String birthdayTo,
                                            @RequestParam(value = "salaryFrom", defaultValue = "")String salaryFrom,
                                            @RequestParam(value = "salaryTo", defaultValue = "")String salaryTo,
-                                           @RequestParam(value = "listCandidateStates", defaultValue = "")List<Candidate.CandidateState> listCandidateStates
+                                           @RequestParam(value = "listCandidateStates", defaultValue = "")List<Candidate.CandidateState> listCandidateStates,
+                                           @RequestParam(value = "page", defaultValue = "1")String page,
+                                           @RequestParam(value = "pageSize", defaultValue = "10")String pageSize,
+                                           @RequestParam(value = "sortColumnName", defaultValue = "ID")String sortColumnName,
+                                           @RequestParam(value = "order", defaultValue = "ASC")String order
     ) {
         CandidateFilter candidateFilter = new CandidateFilter();
         candidateFilter.setSalaryFrom(salaryFrom);
@@ -43,6 +47,10 @@ public class CandidateController {
         candidateFilter.setName(name);
         candidateFilter.setSurname(surname);
         candidateFilter.setCandidateStates(listCandidateStates);
+        candidateFilter.setPage(Integer.parseInt(page));
+        candidateFilter.setPagesize(Integer.parseInt(pageSize));
+        candidateFilter.setSortColumnName(sortColumnName);
+        candidateFilter.setOrder(order);
         List<Candidate> candidates = candidateDao.list(candidateFilter);
         return ResponseEntity.ok().body(candidates);
     }

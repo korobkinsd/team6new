@@ -7,11 +7,18 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 
-@Entity
+@Entity (name = "ContactDetails")
 @Table (name = "CONTACT_DETAILS")
 public class ContactDetails {
 
     public enum ContactDetailType {EMAIL, MOBILEPHONE, HOMEPHONE, ADDRESS}
+
+    @Transient
+    private Candidate candidate;
+
+    @Id
+    @Column(name="ROWID")
+    private String id;
 
     @Column(name="CANDIDATE_ID", nullable = false)
     private Integer idCandidate;
@@ -26,6 +33,24 @@ public class ContactDetails {
     @Column(name="CONTACT_TYPE", nullable = false)
     private ContactDetailType contactType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CANDIDATE_ID", referencedColumnName = "ID")
+    public Candidate getCandidate() {
+        return this.candidate;
+    }
+
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
+    }
+
+    public ContactDetailType getContactType() {
+        return contactType;
+    }
+
+    public void setContactType(ContactDetailType contactType) {
+        this.contactType = contactType;
+    }
+
     public final int getIdCandidate() {
         return idCandidate;
     }
@@ -34,12 +59,20 @@ public class ContactDetails {
         this.idCandidate = idCandidate;
     }
 
-    public final String getContactDetail() {
+    public final String getContactDetails() {
         return contactDetails;
     }
 
-    public final void setContactDetail(final String contactDetails) {
+    public final void setContactDetails(final String contactDetails) {
         this.contactDetails = contactDetails;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
