@@ -28,8 +28,10 @@ public class UserControllerTest {
         UserDao userDao = mock(UserDao.class);
         UserUtil userUtil = generateUser();
         User user = new User();
+        List<User> listUsers = new ArrayList<User>();
+        listUsers.add(user);
         when(userDao.list(userUtil))
-                .thenReturn(List.of(user));
+                .thenReturn(listUsers);
 
         controller.setUserDao(userDao);
 

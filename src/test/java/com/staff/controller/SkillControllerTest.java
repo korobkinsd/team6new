@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,8 +27,10 @@ class SkillControllerTest {
         SkillDao skillDao=mock(SkillDao.class);
         TrashUtil trashUtil = generateSkill();
         Skill skill = new Skill();
+        List<Skill> listSkills = new ArrayList<Skill>();
+        listSkills.add(skill);
         when(skillDao.list(trashUtil))
-                .thenReturn(List.of(skill));
+                .thenReturn(  listSkills );   //  List.of(skill)
 
         skillController.setSkillDao(skillDao);
 

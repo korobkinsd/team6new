@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,7 +59,9 @@ class VacancyControllerTest {
         Vacancy vacancy = generateVacancy();
         Vacancy vacancyempty = generateVacancy();
         controller.vacancyDao = vacancyDao;
-        when(vacancyDao.list(any(Vacancy.class),anyInt(),anyInt())).thenReturn(List.of(vacancy));
+        List<Vacancy> listVacancies = new ArrayList<Vacancy>();
+        listVacancies.add(vacancy);
+        when(vacancyDao.list(any(Vacancy.class),anyInt(),anyInt())).thenReturn(listVacancies);
 
         ResponseEntity<List<Vacancy>> vacancys = controller.list(vacancyempty.getId(),vacancyempty.getPosition(),vacancyempty.getSalaryFrom(),vacancyempty.getSalaryTo(),vacancyempty.getIdDeveloper(),vacancyempty.getState(),vacancyempty.getExperienceYearsRequire(),1,10);
         assertEquals(vacancys.getBody().size(), 1);

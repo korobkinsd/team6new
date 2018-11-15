@@ -20,8 +20,7 @@ import javax.sql.DataSource;
 @Configuration
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-@ComponentScans(value = { @ComponentScan("com.staff.dao"),
-      @ComponentScan("com.staff.service") })
+@ComponentScans(value = { @ComponentScan("com.staff.dao"), @ComponentScan("com.staff.util.filtering") })
 public class AppConfig {
 
     @Autowired

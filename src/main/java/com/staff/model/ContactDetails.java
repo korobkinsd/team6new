@@ -3,13 +3,13 @@ package com.staff.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.Objects;
 
 
 @Entity
 @Table (name = "CONTACT_DETAILS")
-public class ContactDetails implements Serializable {
+public class ContactDetails {
 
     public enum ContactDetailType {EMAIL, MOBILEPHONE, HOMEPHONE, ADDRESS}
 
