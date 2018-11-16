@@ -13,7 +13,7 @@ public interface UserDao {
 
     List<User> list(UserUtil userUtil);
 
-    void update(long id, User vacancy);
+    void update(long id, User user);
 
     void delete(long id);
 }
