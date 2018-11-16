@@ -55,7 +55,7 @@ public class Candidate {   // implements Serializable
     private String surname;
 
     @Min(0)
-    private double salary;
+    private Double salary;
 
     @Past
     @Temporal(value = TemporalType.DATE)
@@ -99,7 +99,7 @@ public class Candidate {   // implements Serializable
         return surname;
     }
 
-    public final double getSalary() {
+    public final Double getSalary() {
         return salary;
     }
 
@@ -208,12 +208,12 @@ public class Candidate {   // implements Serializable
     @Override
     public final String toString() {
         return "Candidate [" +
-                "id=" + this.getId().toString() +
+                "id=" + (this.id != null ? this.getId().toString() : "" )+
                 ", name='" + (this.name != null ? this.getName() : "")+ '\'' +
                 ", surname='" + (this.surname != null ?this.getSurname() : "") + '\'' +
-                ", salary=" + this.getSalary() +
+                ", salary=" + (this.salary != null ? this.getSalary() : "") +
                 ", birthday=" + this.getBirthdayAsString() +
-                ", candidateState=" + this.getCandidateState().toString() +
+                ", candidateState=" + (this.candidateState != null ? this.getCandidateState().getDescription() : "")+
                 "]";
     }
 

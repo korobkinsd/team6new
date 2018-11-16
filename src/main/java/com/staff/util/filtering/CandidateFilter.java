@@ -175,6 +175,8 @@ public class CandidateFilter {
     public void setPage(Integer page) {
         if ( page > 0 ) {
             this.page = page;
+        } else {
+            this.page = 1;
         }
     }
 
@@ -185,6 +187,8 @@ public class CandidateFilter {
     public void setPagesize(Integer pagesize) {
         if ( pagesize > 0 ) {
             this.pagesize = pagesize;
+        } else {
+            this.pagesize = 10;
         }
     }
 

@@ -16,6 +16,15 @@ public class CandidateController {
     @Autowired
     private CandidateDao candidateDao;
 
+    public void setCandidateDao(CandidateDao candidateDao){
+        this.candidateDao = candidateDao;
+    }
+
+    public CandidateDao getCandidateDao(){
+        return this.candidateDao;
+    }
+
+
     private final Logger logger = LoggerFactory.getLogger(CandidateController.class);
 
     @PostMapping("/candidate")
@@ -50,8 +59,8 @@ public class CandidateController {
         candidateFilter.setBirthdayTo(birthdayTo);
         candidateFilter.setName(name);
         candidateFilter.setSurname(surname);
-        candidateFilter.setPage(Integer.parseInt(page));
-        candidateFilter.setPagesize(Integer.parseInt(pageSize));
+        candidateFilter.setPage( ( page != null && !"".equals(page) ? Integer.parseInt(page) : 1 ));
+        candidateFilter.setPagesize( ( pageSize != null && !"".equals(pageSize) ? Integer.parseInt(pageSize) : 10 ));
         candidateFilter.setSortColumnName(sortColumnName);
         candidateFilter.setOrder(order);
         candidateFilter.setCandidateStates(listCandidateStates);
