@@ -5,7 +5,7 @@ CREATE SCHEMA `team6` ;
 use team6;
 
 create table if not exists ROLE
-( `ID` int not null AUTO_INCREMENT
+( `ID` bigint not null AUTO_INCREMENT
 , `NAME` varchar(255) not null
 , primary key (`ID`)
 , unique key (`NAME`)
@@ -18,7 +18,7 @@ insert into role (`NAME`) values ('Developer');
 insert into role (`NAME`) values ('Manager');
 
 create table if not exists USER
-( `ID` int not null AUTO_INCREMENT
+( `ID` bigint not null AUTO_INCREMENT
 , `EMAIL` varchar(100) not null
 , `PASSWORD` varchar(255) not null
 , `NAME` varchar(255) not null
@@ -35,8 +35,8 @@ insert into user (`EMAIL`, `NAME`, `SURNAME`, `PASSWORD`,`USER_STATE`) values ('
 insert into user (`EMAIL`, `NAME`, `SURNAME`, `PASSWORD`,`USER_STATE`) values ('manager@sj.com','Manager','','111111','Active');
 
 create table if not exists USER_ROLES
-( `USER_ID` int not null
-, `ROLE_ID` int not null
+( `USER_ID` bigint not null
+, `ROLE_ID` bigint not null
 , unique key (`USER_ID`,`ROLE_ID`)
 );
 
@@ -138,7 +138,7 @@ insert into RESPONSIBILITY (`NAME`) values ('Функции администра
 
 
 create table if not exists CANDIDATE
-( `ID` int not null AUTO_INCREMENT
+( `ID` bigint not null AUTO_INCREMENT
 , `NAME` varchar(255) not null
 , `SURNAME` varchar(255)
 , `BIRTHDAY` date
@@ -155,7 +155,7 @@ insert into CANDIDATE (`NAME`, `SURNAME`, `BIRTHDAY`, `SALARY`, `CANDIDATE_STATE
 
 
 create table if not exists CONTACT_DETAILS
-( `CANDIDATE_ID` int not null
+( `CANDIDATE_ID` bigint not null
 , `CONTACT_TYPE` enum ('Mobile phone','E-mail','Address') not null
 , `CONTACT_DETAILS` varchar(1000) not null
 , index `contactDetails_I01` (`CANDIDATE_ID`)
@@ -201,8 +201,8 @@ values (
 
 
 create table if not exists CANDIDATE_EXPERIENCE
-( `ID` int not null AUTO_INCREMENT
-, `CANDIDATE_ID` int not null
+( `ID` bigint not null AUTO_INCREMENT
+, `CANDIDATE_ID` bigint not null
 , `DATE_FROM` date not null
 , `DATE_TO` date not null
 , `JOB_DESCRIPTION` varchar(4000)
@@ -216,7 +216,7 @@ create table if not exists CANDIDATE_EXPERIENCE
 alter table CANDIDATE_EXPERIENCE add constraint candidateExperienceFK_candidate foreign key (CANDIDATE_ID) references `CANDIDATE`(ID)  on delete cascade on update cascade;
 
 create table if not exists CANDIDATE_RESPONSIBILITY
-(`CANDIDATE_EXPERIENCE_ID` int not null
+(`CANDIDATE_EXPERIENCE_ID` bigint not null
 , `RESPONSIBILITY` varchar(255) not null
 );
 
@@ -225,7 +225,7 @@ alter table CANDIDATE_RESPONSIBILITY add constraint candidateResponsibilityFK_ca
 alter table CANDIDATE_RESPONSIBILITY add constraint candidateResponsibilityFK_responsibility foreign key (RESPONSIBILITY) references `RESPONSIBILITY`(NAME) on delete cascade on update cascade;
 
 create table if not exists ATTACHMENT
-( `CANDIDATE_ID` int not null
+( `CANDIDATE_ID` bigint not null
 , `FILE_PATH` varchar(1000)
 , `ATTACHMENT_TYPE` enum ('CV', 'Cover Letter','Photo') not null
 );
@@ -234,7 +234,7 @@ alter table ATTACHMENT add constraint attachmentFK_candidate foreign key (CANDID
 
 
 create table if not exists CANDIDATE_COMPETENCE
-( `CANDIDATE_ID` int not null
+( `CANDIDATE_ID` bigint not null
 , `SKILL` varchar(255) not null
 , unique key (`CANDIDATE_ID`,`SKILL`)
 );
@@ -245,9 +245,9 @@ alter table CANDIDATE_COMPETENCE add constraint candidateCompetenceFK_skill fore
 
 
 create table if not exists VACANCY
-( `ID` int not null AUTO_INCREMENT
+( `ID` bigint not null AUTO_INCREMENT
 , `POSITION` varchar(1000)
-, `DEVELOPER_ID` int not null
+, `DEVELOPER_ID` bigint not null
 , `SALARY_FROM` decimal(10,2) not null check(`SALARY_FROM`>=0)
 , `SALARY_TO` decimal(10,2) not null check(`SALARY_TO`>=0)
 , `VACANCY_STATE` enum ('Active','Archive') not null
@@ -258,7 +258,7 @@ create table if not exists VACANCY
 alter table VACANCY add constraint vacancyFK_developer foreign key (DEVELOPER_ID) references `USER`(ID) on delete cascade on update cascade;
 
 create table if not exists VACANCY_REQUIREMENT
-( `VACANCY_ID` int not null
+( `VACANCY_ID` bigint not null
 , `REQUIREMENT` varchar(255) not null
 , unique key (`VACANCY_ID`,`REQUIREMENT`)
 );
@@ -269,8 +269,8 @@ alter table VACANCY_REQUIREMENT add constraint vacancyRequirementFK_requirement 
 
 
 create table if not exists VACANCY_CANDIDATES
-( `VACANCY_ID` int not null
-, `CANDIDATE_ID` int not null
+( `VACANCY_ID` bigint not null
+, `CANDIDATE_ID` bigint not null
 , `SUITABLE_STATE` varchar(255)
 , `REASON` varchar(1000)
 , unique key (`VACANCY_ID`,`CANDIDATE_ID`)
@@ -283,10 +283,10 @@ alter table VACANCY_CANDIDATES add constraint vacancyCandidatesFK_candidate fore
 alter table VACANCY_CANDIDATES add constraint vacancyCandidatesFK_state foreign key (SUITABLE_STATE) references `SUITABLE_STATE`(NAME) on delete cascade on update cascade;
 
 create table if not exists INTERVIEW
-( `ID` int not null AUTO_INCREMENT
-, `VACANCY_ID` int not null
+( `ID` bigint not null AUTO_INCREMENT
+, `VACANCY_ID` bigint not null
 , `PLAN_DATE` datetime not null
-, `CANDIDATE_ID` int not null
+, `CANDIDATE_ID` bigint not null
 , `FACT_DATE` datetime
 , unique key (`VACANCY_ID`,`CANDIDATE_ID`,`PLAN_DATE`)
 , primary key (`ID`)
@@ -298,10 +298,10 @@ alter table INTERVIEW add constraint interviewFK_candidate foreign key (CANDIDAT
 
 
 create table if not exists CANDIDATE_FEEDBACK
-( `ID` int not null AUTO_INCREMENT
-, `CANDIDATE_ID` int not null
-, `INTERVIEW_ID` int 
-, `INTERVIEWER_ID` int not null
+( `ID` bigint not null AUTO_INCREMENT
+, `CANDIDATE_ID` bigint not null
+, `INTERVIEW_ID` bigint 
+, `INTERVIEWER_ID` bigint not null
 , `FEEDBACK_STATE` varchar(255)
 , `FEEDBACK_TEXT` varchar(4000)
 , primary key (`ID`)
@@ -317,7 +317,7 @@ alter table CANDIDATE_FEEDBACK add constraint candidateFeedbackFK_interviewer fo
 alter table CANDIDATE_FEEDBACK add constraint candidateFeedbackFK_state foreign key (FEEDBACK_STATE) references `FEEDBACK_STATE`(NAME) on delete cascade on update cascade;
 
 create table if not exists FEEDBACK_DETAILS
-( `CANDIDATE_FEEDBACK_ID` int not null
+( `CANDIDATE_FEEDBACK_ID` bigint not null
 , `REQUIREMENT` varchar(255) not null
 , `VERIFY_STATE` varchar(255)
 , unique key (`CANDIDATE_FEEDBACK_ID`,`REQUIREMENT`)

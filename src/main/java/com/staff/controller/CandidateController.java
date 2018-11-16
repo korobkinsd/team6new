@@ -2,17 +2,21 @@ package com.staff.controller;
 
 import com.staff.dao.CandidateDao;
 import com.staff.model.Candidate;
+import com.staff.model.Candidate_;
 import com.staff.util.filtering.CandidateFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 @RestController
 public class CandidateController {
     @Autowired
     private CandidateDao candidateDao;
+
+    private final Logger logger = LoggerFactory.getLogger(CandidateController.class);
 
     @PostMapping("/candidate")
     public ResponseEntity<?> save(@RequestBody Candidate candidate) {
@@ -27,8 +31,8 @@ public class CandidateController {
     }
     @GetMapping("/candidate")
     public ResponseEntity<List<Candidate>> list(
-                                           @RequestParam(value = "name", defaultValue = "0")String name,
-                                           @RequestParam(value = "surname", defaultValue = "0")String surname,
+                                           @RequestParam(value = "name", defaultValue = "")String name,
+                                           @RequestParam(value = "surname", defaultValue = "")String surname,
                                            @RequestParam(value = "birthdayFrom", defaultValue = "")String birthdayFrom,
                                            @RequestParam(value = "birthdayTo", defaultValue = "")String birthdayTo,
                                            @RequestParam(value = "salaryFrom", defaultValue = "")String salaryFrom,
@@ -36,7 +40,7 @@ public class CandidateController {
                                            @RequestParam(value = "listCandidateStates", defaultValue = "")List<Candidate.CandidateState> listCandidateStates,
                                            @RequestParam(value = "page", defaultValue = "1")String page,
                                            @RequestParam(value = "pageSize", defaultValue = "10")String pageSize,
-                                           @RequestParam(value = "sortColumnName", defaultValue = "ID")String sortColumnName,
+                                           @RequestParam(value = "sortColumnName", defaultValue = Candidate_.ID)String sortColumnName,
                                            @RequestParam(value = "order", defaultValue = "ASC")String order
     ) {
         CandidateFilter candidateFilter = new CandidateFilter();
@@ -46,12 +50,13 @@ public class CandidateController {
         candidateFilter.setBirthdayTo(birthdayTo);
         candidateFilter.setName(name);
         candidateFilter.setSurname(surname);
-        candidateFilter.setCandidateStates(listCandidateStates);
         candidateFilter.setPage(Integer.parseInt(page));
         candidateFilter.setPagesize(Integer.parseInt(pageSize));
         candidateFilter.setSortColumnName(sortColumnName);
         candidateFilter.setOrder(order);
+        candidateFilter.setCandidateStates(listCandidateStates);
         List<Candidate> candidates = candidateDao.list(candidateFilter);
+        logger.debug("done");
         return ResponseEntity.ok().body(candidates);
     }
 

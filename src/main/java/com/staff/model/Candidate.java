@@ -1,15 +1,11 @@
 package com.staff.model;
 
-import org.hibernate.annotations.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
-
-//import java.io.Serializable;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Date;
@@ -19,8 +15,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
-
 @Entity
+@Table(name = "CANDIDATE", schema = "team6")
 public class Candidate {   // implements Serializable
 
     public enum CandidateState {
@@ -42,14 +38,14 @@ public class Candidate {   // implements Serializable
             }
             throw new UnsupportedOperationException( "The state " + state + " is not supported!" );
         }
+
         public String getDescription() { return description; }
     }
 
-    private final Logger logger = LoggerFactory.getLogger(Candidate.class);
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotNull(message="is required")
     @Size(min=3, max=255, message="name must be between 3 and 255 characters long")
@@ -67,14 +63,18 @@ public class Candidate {   // implements Serializable
     private Date birthday;
 
     @NotNull(message="is required")
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(name="CANDIDATE_STATE")
+    @Convert (converter = CandidateStateConverter.class)
     private CandidateState candidateState;
 
     @Transient
     private List<String> listCandidateState;
 
     @Transient
+    private final Logger logger = LoggerFactory.getLogger(Candidate.class);
+
+    /*@Transient
     private Collection<ContactDetails> contactDetailsList;
 
     @OneToMany( mappedBy = "CANDIDATE" )
@@ -85,9 +85,9 @@ public class Candidate {   // implements Serializable
 
     public final void setContactDetailsList(Collection<ContactDetails> contactDetailsList) {
         this.contactDetailsList = contactDetailsList;
-    }
+    }*/
 
-    public final Integer getId() {
+    public final Long getId() {
         return id;
     }
 
@@ -111,7 +111,7 @@ public class Candidate {   // implements Serializable
         return candidateState;
     }
 
-    public final void setId(Integer id) {
+    public final void setId(Long id) {
         this.id = id;
     }
 
@@ -209,8 +209,8 @@ public class Candidate {   // implements Serializable
     public final String toString() {
         return "Candidate [" +
                 "id=" + this.getId().toString() +
-                ", name='" + this.getName() + '\'' +
-                ", surname='" + this.getSurname() + '\'' +
+                ", name='" + (this.name != null ? this.getName() : "")+ '\'' +
+                ", surname='" + (this.surname != null ?this.getSurname() : "") + '\'' +
                 ", salary=" + this.getSalary() +
                 ", birthday=" + this.getBirthdayAsString() +
                 ", candidateState=" + this.getCandidateState().toString() +
@@ -226,4 +226,25 @@ public class Candidate {   // implements Serializable
     public final String getForeignKey() {
         return this.id != null ? this.id.toString() : "-1";
     }*/
+
+    @Converter
+    public static class CandidateStateConverter
+            implements AttributeConverter<CandidateState, String> {
+
+        public String convertToDatabaseColumn( CandidateState value ) {
+            if ( value == null ) {
+                return null;
+            }
+            return value.getDescription();
+        }
+
+        public CandidateState convertToEntityAttribute( String value ) {
+            if ( value == null ) {
+                return null;
+            }
+            return CandidateState.getByString( value );
+        }
+    }
+
+
 }

@@ -51,20 +51,23 @@ public class CandidateFilter {
     }
 
     public final void setBirthdayFrom(String birthdayFrom) {
-        String[] validPatterns = {"dd.MM.yyyy","dd/MM/yyyy","dd-MM-yyyy","dd/mm/yy","yyyy-MM-dd"};
-        SimpleDateFormat formatter = new SimpleDateFormat();
-        for (String validPattern : validPatterns) {
-            try {
-                formatter.applyPattern(validPattern);
-                formatter.setLenient(false);
-                Date ret = new Date(formatter.parse(birthdayFrom).getTime());
-                this.birthdayFrom = ret;
-            } catch (ParseException e) {
-                //ok, just take next pattern
-                //TODO add exception
+        if (birthdayFrom!=null && !"".equals(birthdayFrom)) {
+            String[] validPatterns = {"dd.MM.yyyy", "dd/MM/yyyy", "dd-MM-yyyy", "dd/mm/yy", "yyyy-MM-dd"};
+            SimpleDateFormat formatter = new SimpleDateFormat();
+            for (String validPattern : validPatterns) {
+                try {
+                    formatter.applyPattern(validPattern);
+                    formatter.setLenient(false);
+                    Date ret = new Date(formatter.parse(birthdayFrom).getTime());
+                    this.birthdayFrom = ret;
+                } catch (ParseException e) {
+                    //ok, just take next pattern
+                    //TODO add exception
+                }
             }
+        } else {
+            this.birthdayFrom = null;
         }
-        this.birthdayFrom = null;
     }
 
     public final Date getBirthdayFrom() {
@@ -81,20 +84,23 @@ public class CandidateFilter {
     }
 
     public final void setBirthdayTo(String birthdayTo) {
-        String[] validPatterns = {"dd.MM.yyyy","dd/MM/yyyy","dd-MM-yyyy","dd/mm/yy","yyyy-MM-dd"};
-        SimpleDateFormat formatter = new SimpleDateFormat();
-        for (String validPattern : validPatterns) {
-            try {
-                formatter.applyPattern(validPattern);
-                formatter.setLenient(false);
-                Date ret = new Date(formatter.parse(birthdayTo).getTime());
-                this.birthdayTo = ret;
-            } catch (ParseException e) {
-                //ok, just take next pattern
-                //TODO add exception
+        if (birthdayTo!=null && !"".equals(birthdayTo)) {
+            String[] validPatterns = {"dd.MM.yyyy", "dd/MM/yyyy", "dd-MM-yyyy", "dd/mm/yy", "yyyy-MM-dd"};
+            SimpleDateFormat formatter = new SimpleDateFormat();
+            for (String validPattern : validPatterns) {
+                try {
+                    formatter.applyPattern(validPattern);
+                    formatter.setLenient(false);
+                    Date ret = new Date(formatter.parse(birthdayTo).getTime());
+                    this.birthdayTo = ret;
+                } catch (ParseException e) {
+                    //ok, just take next pattern
+                    //TODO add exception
+                }
             }
+        } else {
+            this.birthdayTo = null;
         }
-        this.birthdayTo = null;
     }
 
     public final Date getBirthdayTo() {
@@ -119,7 +125,9 @@ public class CandidateFilter {
     }
 
     public final void setSalaryFrom(String salaryFrom) {
-        this.salaryFrom = Double.parseDouble(salaryFrom);
+        if (salaryFrom!=null && !"".equals(salaryFrom)) {
+            this.salaryFrom = Double.parseDouble(salaryFrom);
+        }
     }
 
     public final Double getSalaryTo() {
@@ -131,7 +139,9 @@ public class CandidateFilter {
     }
 
     public final void setSalaryTo(String salaryTo) {
-        this.salaryTo = Double.parseDouble(salaryTo);
+        if (salaryTo!=null && !"".equals(salaryTo)) {
+            this.salaryTo = Double.parseDouble(salaryTo);
+        }
     }
 
     public final List<Candidate.CandidateState> getCandidateStates() {
@@ -163,7 +173,9 @@ public class CandidateFilter {
     }
 
     public void setPage(Integer page) {
-        this.page = page;
+        if ( page > 0 ) {
+            this.page = page;
+        }
     }
 
     public Integer getPagesize() {
@@ -171,7 +183,9 @@ public class CandidateFilter {
     }
 
     public void setPagesize(Integer pagesize) {
-        this.pagesize = pagesize;
+        if ( pagesize > 0 ) {
+            this.pagesize = pagesize;
+        }
     }
 
     @Override
@@ -182,13 +196,13 @@ public class CandidateFilter {
             result.append(o.toString()).append(";");
         }
         return "CandidateFilter{" +
-                "name='" + getName() + '\'' +
-                ", surname='" + getSurname() + '\'' +
-                ", birthdayFrom=" + getBirthdayFromAsString() +
-                ", birthdayTo=" + getBirthdayToAsString() +
-                ", salaryFrom=" + getSalaryFrom().toString() +
-                ", salaryTo=" + getSalaryTo().toString() +
-                ", candidateStates=" + result.toString() +
+                "name='" + ( this.name!=null ? getName() : "") + '\'' +
+                ", surname='" + ( this.name!=null ? getSurname() : "") + '\'' +
+                ", birthdayFrom=" + ( this.birthdayFrom != null ? getBirthdayFromAsString() : "") +
+                ", birthdayTo=" + ( this.birthdayTo != null ? getBirthdayToAsString() : "") +
+                ", salaryFrom=" + ( this.salaryFrom != null ? getSalaryFrom().toString() : "") +
+                ", salaryTo=" + ( this.salaryTo != null ? getSalaryTo().toString() : "") +
+                ", candidateStates=" + ( result!=null ? result.toString() : "") +
                 '}';
     }
 }
