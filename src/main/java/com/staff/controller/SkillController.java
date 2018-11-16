@@ -1,8 +1,8 @@
 package com.staff.controller;
 
 import com.staff.dao.SkillDao;
+import com.staff.metamodel.Skill_;
 import com.staff.model.Skill;
-import com.staff.model.Skill_;
 import com.staff.util.filtering.TrashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

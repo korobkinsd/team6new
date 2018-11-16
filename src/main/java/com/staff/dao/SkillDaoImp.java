@@ -1,7 +1,7 @@
 package com.staff.dao;
 
 import com.staff.model.Skill;
-import com.staff.model.Skill_;
+import com.staff.metamodel.Skill_;
 import com.staff.util.filtering.TrashUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -48,7 +48,7 @@ public class SkillDaoImp implements SkillDao {
 
       String name = trashUtil.name;
       if (name!=null && !name.equals("") ) {
-         predicates.add( cb.like(cb.lower(root.get(Skill_.NAME)),"%"+name.toLowerCase()+"%"));
+         predicates.add( cb.like(cb.lower(root.<String>get(Skill_.NAME)),"%"+name.toLowerCase()+"%"));
       }
 
       cq.where(

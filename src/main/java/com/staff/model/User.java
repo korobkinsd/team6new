@@ -31,7 +31,6 @@ public class User {
         this.id = id;
     }
 
-    @Basic
     @Column(name = "email")
     public String getEmail() {
         return email;
@@ -41,7 +40,6 @@ public class User {
         this.email = email;
     }
 
-    @Basic
     @Column(name = "password")
     public String getPassword() {
         return password;
@@ -51,7 +49,6 @@ public class User {
         this.password = password;
     }
 
-    @Basic
     @Column(name = "name")
     public String getName() {
         return name;
@@ -61,7 +58,6 @@ public class User {
         this.name = name;
     }
 
-    @Basic
     @Column(name = "surname")
     public String getSurname() {
         return surname;
@@ -71,7 +67,6 @@ public class User {
         this.surname = surname;
     }
 
-    @Basic
     @Column(name = "userState")
     public String getUserState() {
         return userState;

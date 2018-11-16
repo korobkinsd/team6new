@@ -12,24 +12,24 @@ public class Vacancy  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Basic
+    
     @Column(name = "position")
     private String position;
 
-    @Basic
+    
     @Column(name = "idDeveloper")
     private Long idDeveloper;
 
-    @Basic
+    
     @Column(name = "salaryFrom")
     private double salaryFrom;
-    @Basic
+    
     @Column(name = "salaryTo")
     private double salaryTo;
-    @Basic
+    
     @Column(name = "experienceYearsRequire")
     private double experienceYearsRequire;
-    @Basic
+    
     @Column(name = "state")
     private String state;
 

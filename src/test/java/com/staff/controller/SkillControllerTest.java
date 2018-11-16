@@ -51,4 +51,8 @@ class SkillControllerTest {
         return trashUtil;
     }
 
+    @Test
+    void delete()
+    {}
+
 }
