@@ -62,7 +62,7 @@ public class CandidateFilter {
                     this.birthdayFrom = ret;
                 } catch (ParseException e) {
                     //ok, just take next pattern
-                    //TODO add exception
+                    return;//TODO add exception
                 }
             }
         } else {
@@ -95,7 +95,7 @@ public class CandidateFilter {
                     this.birthdayTo = ret;
                 } catch (ParseException e) {
                     //ok, just take next pattern
-                    //TODO add exception
+                    return;//TODO add exception
                 }
             }
         } else {

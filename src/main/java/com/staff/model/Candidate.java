@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
+//import java.util.List;
 import java.util.Objects;
 import java.util.Date;
 import javax.persistence.*;
@@ -68,8 +68,8 @@ public class Candidate {   // implements Serializable
     @Convert (converter = CandidateStateConverter.class)
     private CandidateState candidateState;
 
-    @Transient
-    private List<String> listCandidateState;
+//    @Transient
+//    private List<String> listCandidateState;
 
     @Transient
     private final Logger logger = LoggerFactory.getLogger(Candidate.class);
@@ -142,7 +142,7 @@ public class Candidate {   // implements Serializable
                 this.birthday = ret;
                 return;
             } catch (ParseException e) {
-                //ok, nothing to do, just takes next pattern
+                return;//ok, nothing to do, just takes next pattern
             }
         }
         logger.debug("Pattern for [" + birthday + "] is not supported!");

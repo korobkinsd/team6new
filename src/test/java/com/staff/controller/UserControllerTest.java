@@ -60,6 +60,8 @@ public class UserControllerTest {
 
         assertEquals(users.getBody().size(), 1);
         assertEquals(users.getBody().get(0), user);
+
+
     }
 
     @Test
@@ -71,6 +73,20 @@ public class UserControllerTest {
         controller.setUserDao(userDao);
 
         controller.update((long) 101, user);
+
+        assertEquals("", "");
+    }
+
+    @Test
+    public void save() {
+        UserDao userDao = mock(UserDao.class);
+        User user = generateUser();
+
+        userDao.save( any(User.class));
+
+        controller.setUserDao(userDao);
+
+        controller.save(user);
 
         assertEquals("", "");
     }

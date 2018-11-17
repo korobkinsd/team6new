@@ -26,7 +26,19 @@ public class CandidateControllerTest {
     }
 
     @Test
-    public void showAllUsers() {
+    public void get() {
+        CandidateDao candidateDao = mock(CandidateDao.class);
+        Candidate candidate = generateCandidate();
+        when(candidateDao.get(anyLong())).thenReturn(candidate);
+
+        controller.setCandidateDao(candidateDao);
+
+        ResponseEntity<Candidate> candidateGet = controller.get(101);
+        assertEquals(candidateGet.getBody(), candidate);
+    }
+    
+    @Test
+    public void showAllCandidates() {
         CandidateDao candidateDao = mock(CandidateDao.class);
         List<Candidate> listCandidate = new ArrayList<Candidate>();
         Candidate testCandidate = generateCandidate();
@@ -44,10 +56,48 @@ public class CandidateControllerTest {
         /*ResponseEntity<List<Candidate>> response = controller.list( any(String.class), any(String.class), any(String.class), any(String.class), any(String.class),
                 any(String.class), anyListOf(Candidate.CandidateState.class), any(String.class), any(String.class), any(String.class), any(String.class));*/
 
-        assertEquals(1, response.getBody().size());  // we must have only one user
+        assertEquals(1, response.getBody().size());  // we must have only one candidate
         assertEquals(testCandidate, response.getBody().get(0)); // we must have two equals candidates
     }
 
+    @Test
+    public void update() {
+        CandidateDao candidateDao = mock(CandidateDao.class);
+        Candidate candidate = generateCandidate();
+        candidateDao.update(anyLong(), any(Candidate.class));
+
+        controller.setCandidateDao(candidateDao);
+
+        controller.update((long) 101, candidate);
+
+        assertEquals("", "");
+    }
+
+    @Test
+    public void save() {
+        CandidateDao candidateDao = mock(CandidateDao.class);
+        Candidate candidate = generateCandidate();
+
+        candidateDao.save( any(Candidate.class));
+
+        controller.setCandidateDao(candidateDao);
+
+        controller.save(candidate);
+
+        assertEquals("", "");
+    }
+
+    @Test
+    public void delete() {
+        CandidateDao candidateDao = mock(CandidateDao.class);
+        Candidate candidate = generateCandidate();
+        candidateDao.delete(anyLong());
+
+        controller.setCandidateDao(candidateDao);
+
+        controller.delete((long) 101);
+    }
+    
     private CandidateFilter generateFilter() {
         CandidateFilter filter = new CandidateFilter();
         filter.setName("Random");

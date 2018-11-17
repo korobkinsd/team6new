@@ -14,6 +14,10 @@ public class VacancyController {
    @Autowired
    protected VacancyDao vacancyDao;
 
+   public void setVacancyDao(VacancyDao vacancyDao){
+      this.vacancyDao = vacancyDao;
+   }
+
    /*---Add new vacancy---*/
    @PostMapping("/vacancy")
    public ResponseEntity<?> save(@RequestBody Vacancy vacancy) {
