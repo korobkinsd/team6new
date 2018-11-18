@@ -2,12 +2,16 @@ package com.staff.controller;
 
 import com.staff.dao.UserDao;
 import com.staff.metamodel.User_;
+import com.staff.model.Role;
 import com.staff.model.User;
+import com.staff.modelDto.UserDto;
 import com.staff.util.filtering.UserUtil;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,12 +35,14 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> get(@PathVariable("id") long id) {
+    public ResponseEntity<UserDto> get(@PathVariable("id") long id) {
         User user = userDao.get(id);
-        return ResponseEntity.ok().body(user);
+
+        UserDto userDto = this.generateUserDto(user);
+        return ResponseEntity.ok().body(userDto);
     }
     @GetMapping("/user")
-    public ResponseEntity<List<User>> list(@RequestParam(value = "email", defaultValue = "")String email,
+    public ResponseEntity<List<UserDto>> list(@RequestParam(value = "email", defaultValue = "")String email,
                                               @RequestParam(value = "name", defaultValue = "")String name,
                                               @RequestParam(value = "surname", defaultValue = "")String surname,
                                               @RequestParam(value = "listUserState", defaultValue = "")List<String> listUserState,
@@ -56,7 +62,29 @@ public class UserController {
         userUtil.pagesize = pagesize;
 
         List<User> users = userDao.list(userUtil);
-        return ResponseEntity.ok().body(users);
+
+        List<UserDto> userDtos = new ArrayList<UserDto>();
+        for (User user: users) {
+            userDtos.add(this.generateUserDto(user));
+        }
+        return ResponseEntity.ok().body(userDtos);
+    }
+
+    private UserDto generateUserDto(User user){
+        UserDto userDto = new UserDto();
+        userDto.id = user.getId();
+        userDto.name = user.getName();
+        userDto.email = user.getEmail();
+        userDto.surname = user.getSurname();
+        userDto.userState = user.getUserState();
+        List<Role> roles = user.getRoles();
+        if (roles != null && roles.size() > 0){
+            userDto.roles = (List)new ArrayList<Role>();
+            for (Role role: roles){
+                userDto.roles.add(role.getName());
+            }
+        }
+        return userDto;
     }
 
     @PutMapping("/user/{id}")

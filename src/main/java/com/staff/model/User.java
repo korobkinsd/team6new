@@ -18,6 +18,9 @@ public class User {
     private Collection<Userroles> userrolesById;
     private Collection<Vacancy> vacanciesById;*/
 
+    private List<Role> roles;
+
+
     @Transient
     private List<String> listUserStatus;
 
@@ -103,6 +106,19 @@ public class User {
     public int hashCode() {
 
         return Objects.hash(id, email, password, name, surname);
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER/*LAZY,
+            cascade=CascadeType.ALL*/)
+    @JoinTable(name = "user_roles",
+            joinColumns = { @JoinColumn(name = "USER_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     /*@OneToMany(mappedBy = "userByIdInterviewer")

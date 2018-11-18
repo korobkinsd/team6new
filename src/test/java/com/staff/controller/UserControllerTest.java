@@ -2,6 +2,7 @@ package com.staff.controller;
 
 import com.staff.dao.UserDao;
 import com.staff.model.User;
+import com.staff.modelDto.UserDto;
 import com.staff.util.filtering.UserUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,12 +29,13 @@ public class UserControllerTest {
     public void get() {
         UserDao userDao = mock(UserDao.class);
         User user = generateUser();
+        UserDto generateUserDto = generateUserDto();
         when(userDao.get(anyLong())).thenReturn(user);
 
         controller.setUserDao(userDao);
 
-        ResponseEntity<User> userGet = controller.get(101);
-        assertEquals(userGet.getBody(), user);
+        ResponseEntity<UserDto> userDto = controller.get(101);
+        assertEquals(userDto.getBody(), generateUserDto);
     }
 
     @Test
@@ -43,12 +45,15 @@ public class UserControllerTest {
         User user = generateUser();
         List<User> listUsers = new ArrayList<User>();
         listUsers.add(user);
+        UserDto generateUserDto = generateUserDto();
+        List<UserDto> listUserDtos = new ArrayList<UserDto>();
+        listUserDtos.add(generateUserDto);
         when(userDao.list(any(UserUtil.class)))
                 .thenReturn(listUsers);
 
         controller.setUserDao(userDao);
 
-        ResponseEntity<List<User>> users = controller.list(
+        ResponseEntity<List<UserDto>> userDtos = controller.list(
                 userUtil.email,
                 userUtil.name,
                 userUtil.surname,
@@ -58,8 +63,8 @@ public class UserControllerTest {
                 userUtil.page,
                 userUtil.pagesize);
 
-        assertEquals(users.getBody().size(), 1);
-        assertEquals(users.getBody().get(0), user);
+        assertEquals(userDtos.getBody().size(), 1);
+        assertEquals(userDtos.getBody().get(0), listUserDtos);
     }
 
     @Test
@@ -108,5 +113,16 @@ public class UserControllerTest {
         user.setEmail("admin");
 
         return user;
+    }
+
+    private UserDto generateUserDto(){
+        UserDto userDto = new UserDto();
+        userDto.id = (long)101;
+        userDto.name = "name";
+        userDto.surname = "surname";
+        userDto.email = "admin";
+        userDto.roles = null;
+
+        return userDto;
     }
 }
