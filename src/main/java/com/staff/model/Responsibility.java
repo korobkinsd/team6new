@@ -1,15 +1,15 @@
 package com.staff.model;
 
-import javax.persistence.Table;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Column;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
-@Table(name = "skill", schema = "team6")
-public class Skill {
+@Table(name = "responsibility", schema = "team6")
+public class Responsibility {
 
    @Id
    @NotNull(message="is required")
@@ -32,8 +32,8 @@ public class Skill {
       if (o == null || getClass() != o.getClass()) {
          return false;
       }
-      Skill skill = (Skill) o;
-      return name.equals(skill.name);
+      Responsibility responsibility = (Responsibility) o;
+      return name.equals(responsibility.name);
    }
 
    @Override
@@ -43,7 +43,7 @@ public class Skill {
 
    @Override
    public final String toString() {
-      return "Skill [" + " name='" + name + "]";
+      return "Responsibility [" + " name='" + name + "]";
    }
 
 }

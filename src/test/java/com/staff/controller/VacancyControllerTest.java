@@ -16,10 +16,10 @@ import static org.mockito.Mockito.*;
 class VacancyControllerTest {
 
 
-    VacancyController controller;
-
+    private VacancyController controller;
+    
     @BeforeEach
-    public void setUp() {
+    protected void setUp() {
         controller = new VacancyController();
 
     }
@@ -36,12 +36,7 @@ class VacancyControllerTest {
         vacancy.setExperienceYearsRequire((double)0);
         return vacancy;
     }
-    
-    
-  
-    @Test
-    void save() {
-    }
+
 
     @Test
     void get() {
@@ -70,12 +65,42 @@ class VacancyControllerTest {
 
     }
 
+
+    @Test
+    void save() {
+        VacancyDao vacancyDao = mock(VacancyDao.class);
+        Vacancy vacancy = generateVacancy();
+        vacancyDao.save(any(Vacancy.class));
+
+        controller.setVacancyDao(vacancyDao);
+
+        controller.save(vacancy);
+
+        assertEquals("", "");
+    }
+
     @Test
     void update() {
+        VacancyDao vacancyDao = mock(VacancyDao.class);
+        Vacancy vacancy = generateVacancy();
+        vacancyDao.update(anyLong(), any(Vacancy.class));
+
+        controller.setVacancyDao(vacancyDao);
+
+        controller.update((long) 101, vacancy);
+
+        assertEquals("", "");
     }
 
     @Test
     void delete() {
+        VacancyDao vacancyDao = mock(VacancyDao.class);
+        Vacancy vacancy = generateVacancy();
+        vacancyDao.delete(anyLong());
+
+        controller.setVacancyDao(vacancyDao);
+
+        controller.delete((long) 101);
     }
 }
 

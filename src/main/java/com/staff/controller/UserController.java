@@ -24,9 +24,9 @@ public class UserController {
         this.userDao = userDao;
     }
 
-    public UserDao getUserDao(){
-        return this.userDao;
-    }
+//    public UserDao getUserDao(){
+//        return this.userDao;
+//    }
 
     @PostMapping("/user")
     public ResponseEntity<?> save(@RequestBody User user) {

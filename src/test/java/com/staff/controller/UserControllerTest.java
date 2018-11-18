@@ -62,7 +62,6 @@ public class UserControllerTest {
                 userUtil.order,
                 userUtil.page,
                 userUtil.pagesize);
-
         assertEquals(userDtos.getBody().size(), 1);
         assertEquals(userDtos.getBody().get(0), listUserDtos);
     }
@@ -76,6 +75,20 @@ public class UserControllerTest {
         controller.setUserDao(userDao);
 
         controller.update((long) 101, user);
+
+        assertEquals("", "");
+    }
+
+    @Test
+    public void save() {
+        UserDao userDao = mock(UserDao.class);
+        User user = generateUser();
+
+        userDao.save( any(User.class));
+
+        controller.setUserDao(userDao);
+
+        controller.save(user);
 
         assertEquals("", "");
     }
