@@ -30,13 +30,13 @@ public class CandidateDaoImpl implements CandidateDao {
 
     @Override
     @Transactional
-    public long save(Candidate candidate) {
+    public Long save(Candidate candidate) {
         sessionFactory.getCurrentSession().save(candidate);
         return candidate.getId();
     }
 
     @Override
-    public Candidate get(long id) {
+    public Candidate get(Long id) {
         return sessionFactory.getCurrentSession().get(Candidate.class, id);
     }
 
@@ -74,7 +74,7 @@ public class CandidateDaoImpl implements CandidateDao {
 
     @Override
     @Transactional
-    public void update(long id, Candidate candidate) {
+    public void update(Long id, Candidate candidate) {
         Session session = sessionFactory.getCurrentSession();
         Candidate newObj = session.byId(Candidate.class).load(id);
         newObj.setName(candidate.getName());
@@ -83,7 +83,7 @@ public class CandidateDaoImpl implements CandidateDao {
 
     @Override
     @Transactional
-    public void delete(long id) {
+    public void delete(Long id) {
         Session session = sessionFactory.getCurrentSession();
         Candidate delObj = session.byId(Candidate.class).load(id);
         session.delete(delObj);

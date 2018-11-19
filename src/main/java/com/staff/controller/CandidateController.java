@@ -5,10 +5,13 @@ import com.staff.model.Candidate;
 import com.staff.model.Candidate_;
 import com.staff.util.filtering.CandidateFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -29,7 +32,7 @@ public class CandidateController {
 
     @PostMapping("/candidate")
     public ResponseEntity<?> save(@RequestBody Candidate candidate) {
-        long id = candidateDao.save(candidate);
+        Long id = candidateDao.save(candidate);
         return ResponseEntity.ok().body("New candidate has been saved with ID:" + id);
     }
 
@@ -70,14 +73,14 @@ public class CandidateController {
     }
 
     @PutMapping("/candidate/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Candidate candidate) {
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody Candidate candidate) {
         candidateDao.update(id, candidate);
-        return ResponseEntity.ok().body("Candidate has been updated successfully.");
+        return ResponseEntity.ok().body("Candidate [id=" + id.toString() + "] has been updated successfully.");
     }
 
     @DeleteMapping("/candidate/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         candidateDao.delete(id);
-        return ResponseEntity.ok().body("Candidate has been deleted successfully.");
+        return ResponseEntity.ok().body("Candidate [id=" + id.toString() + "] has been deleted successfully.");
     }
 }

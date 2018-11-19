@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface CandidateDao {
 
-        long save(Candidate candidate);
+        Long save(Candidate candidate);
 
-        Candidate get(long id);
+        Candidate get(Long id);
 
         List<Candidate> list(CandidateFilter filter);
 
-        void update(long id, Candidate candidate);
+        void update(Long id, Candidate candidate);
 
-        void delete(long id);
+        void delete(Long id);
 
 }
 

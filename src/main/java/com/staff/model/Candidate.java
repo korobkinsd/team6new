@@ -1,11 +1,14 @@
 package com.staff.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Date;
@@ -74,18 +77,19 @@ public class Candidate {   // implements Serializable
     @Transient
     private final Logger logger = LoggerFactory.getLogger(Candidate.class);
 
-    /*@Transient
+    @JsonBackReference
+    @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "candidate" )
+    //@JoinColumn( name = "CANDIDATE_ID", referencedColumnName = "ID")
+    @JsonManagedReference
     private Collection<ContactDetails> contactDetailsList;
 
-    @OneToMany( mappedBy = "CANDIDATE" )
-    @JoinColumn( name = "ID", referencedColumnName = "CANDIDATE_ID")
-    private Collection<ContactDetails> getContactDetailsById() {
+    private Collection<ContactDetails> getContactDetailsList() {
         return this.contactDetailsList;
     };
 
     public final void setContactDetailsList(Collection<ContactDetails> contactDetailsList) {
         this.contactDetailsList = contactDetailsList;
-    }*/
+    }
 
     public final Long getId() {
         return id;
