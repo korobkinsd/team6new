@@ -23,9 +23,9 @@ public class CandidateController {
         this.candidateDao = candidateDao;
     }
 
-    public CandidateDao getCandidateDao(){
-        return this.candidateDao;
-    }
+//    public CandidateDao getCandidateDao(){
+//        return this.candidateDao;
+//    }
 
 
     private final Logger logger = LoggerFactory.getLogger(CandidateController.class);
@@ -62,8 +62,8 @@ public class CandidateController {
         candidateFilter.setBirthdayTo(birthdayTo);
         candidateFilter.setName(name);
         candidateFilter.setSurname(surname);
-        candidateFilter.setPage( ( page != null && !"".equals(page) ? Integer.parseInt(page) : 1 ));
-        candidateFilter.setPagesize( ( pageSize != null && !"".equals(pageSize) ? Integer.parseInt(pageSize) : 10 ));
+        candidateFilter.setPage(page != null && !"".equals(page) ? Integer.parseInt(page) : 1);
+        candidateFilter.setPagesize(pageSize != null && !"".equals(pageSize) ? Integer.parseInt(pageSize) : 10);
         candidateFilter.setSortColumnName(sortColumnName);
         candidateFilter.setOrder(order);
         candidateFilter.setCandidateStates(listCandidateStates);

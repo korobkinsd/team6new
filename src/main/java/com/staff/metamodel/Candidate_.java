@@ -3,7 +3,6 @@ package com.staff.metamodel;
 import com.staff.model.Candidate;
 import com.staff.model.Candidate.CandidateState;
 import java.util.Date;
-import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 

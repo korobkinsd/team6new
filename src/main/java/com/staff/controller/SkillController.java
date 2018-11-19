@@ -20,9 +20,9 @@ public class SkillController {
       this.skillDao = skillDao;
    }
 
-   public SkillDao getSkillDao(){
-      return this.skillDao;
-   }
+//   public SkillDao getSkillDao(){
+//      return this.skillDao;
+//   }
 
    @PostMapping("/skill")
    public ResponseEntity<?> save(@RequestBody Skill skill) {
