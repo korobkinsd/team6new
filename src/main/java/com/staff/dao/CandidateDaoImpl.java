@@ -66,7 +66,8 @@ public class CandidateDaoImpl implements CandidateDao {
             cq.orderBy(cb.desc(root.get(filter.getSortColumnName())));
         }
         Query<Candidate> query = session.createQuery(cq);
-        query.setFirstResult((filter.getPage()-1)*filter.getPagesize()+1);
+        //query.setFirstResult((filter.getPage()-1)*filter.getPagesize()+1);
+        query.setFirstResult((filter.getPage()-1) * filter.getPagesize());
         query.setMaxResults(filter.getPagesize());
         logger.debug("CandidateDaoImpl.list() done");
         return query.getResultList();

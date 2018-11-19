@@ -115,7 +115,8 @@ public class ContactDetails {
             return false;
         }
         ContactDetails that = (ContactDetails) o;
-        return  Objects.equals(contactType, that.contactType) &&
+        return  Objects.equals(id, that.id) &&
+                Objects.equals(contactType, that.contactType) &&
                 Objects.equals(contactDetails, that.contactDetails);
     }
 

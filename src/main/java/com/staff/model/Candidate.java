@@ -9,8 +9,8 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -107,9 +107,9 @@ public class Candidate {   // implements Serializable
         return salary;
     }
 
-    public final Date getBirthday() {
+    /*public final Date getBirthday() {
         return birthday;
-    }
+    }*/
 
     public final CandidateState getCandidateState() {
         return candidateState;
@@ -147,6 +147,7 @@ public class Candidate {   // implements Serializable
                 return;
             } catch (ParseException e) {
                 //ok, nothing to do, just takes next pattern
+                logger.debug("Skip pattern " + validPattern);
             }
         }
         logger.debug("Pattern for [" + birthday + "] is not supported!");
@@ -196,21 +197,22 @@ public class Candidate {   // implements Serializable
             return false;
         }
         Candidate candidate = (Candidate) o;
-        return id == candidate.id &&
-                Double.compare(candidate.salary, salary) == 0 &&
-                Objects.equals(name, candidate.name) &&
-                Objects.equals(surname, candidate.surname) &&
+        return  Objects.equals(id,candidate.id) &&
+                //Double.compare(candidate.salary, salary) == 0 &&
+                //Objects.equals(name, candidate.name) &&
+                //Objects.equals(surname, candidate.surname) &&
                 Objects.equals(birthday, candidate.birthday) &&
-                candidateState == candidate.candidateState;
+                Objects.equals(candidateState, candidate.candidateState);
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(id, name, surname, salary, birthday, candidateState);
+        return Objects.hash(id, birthday, candidateState);
     }
 
     @Override
     public final String toString() {
+        Collection<ContactDetails> contactDetails = this.getContactDetailsList();
         return "Candidate [" +
                 "id=" + (this.id != null ? this.getId().toString() : "" )+
                 ", name='" + (this.name != null ? this.getName() : "")+ '\'' +
@@ -218,6 +220,7 @@ public class Candidate {   // implements Serializable
                 ", salary=" + (this.salary != null ? this.getSalary() : "") +
                 ", birthday=" + this.getBirthdayAsString() +
                 ", candidateState=" + (this.candidateState != null ? this.getCandidateState().getDescription() : "")+
+                ", contactDetails: " + contactDetails.toString()+
                 "]";
     }
 

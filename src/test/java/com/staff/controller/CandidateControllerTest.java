@@ -58,15 +58,16 @@ public class CandidateControllerTest {
 
         controller.setCandidateDao(candidateDao);
 
-        ResponseEntity<List<Candidate>> listCandidates = controller.list(filter.getName(), filter.getSurname(), filter.getBirthdayFromAsString(),
+        //ResponseEntity<List<Candidate>>
+        List<Candidate> listCandidates = controller.list(filter.getName(), filter.getSurname(), filter.getBirthdayFromAsString(),
             filter.getBirthdayToAsString(), filter.getSalaryFrom().toString(), filter.getSalaryTo().toString(), filter.getCandidateStates(),
             filter.getPage().toString(), filter.getPagesize().toString(),
             filter.getSortColumnName(), filter.getOrder());
         /*ResponseEntity<List<Candidate>> response = controller.list( any(String.class), any(String.class), any(String.class), any(String.class), any(String.class),
                 any(String.class), anyListOf(Candidate.CandidateState.class), any(String.class), any(String.class), any(String.class), any(String.class));*/
 
-        assertEquals(1, listCandidates.getBody().size());  // we must have only one user
-        assertEquals(testCandidate, listCandidates.getBody().get(0)); // we must have two equals candidates
+        assertEquals(1, listCandidates.size());  // we must have only one user
+        assertEquals(testCandidate, listCandidates.get(0)); // we must have two equals candidates
 
         /*ResponseEntity<Candidate> oneCandidate = controller.get( 100500L );
         assertEquals( testCandidate, oneCandidate.getBody());
@@ -100,8 +101,8 @@ public class CandidateControllerTest {
         when(candidateDao.get( anyLong() ))
                 .thenReturn(testCandidate);
         controller.setCandidateDao(candidateDao);
-        ResponseEntity<Candidate> candidate = controller.get( 1L );
-        assertEquals(testCandidate, candidate.getBody()); // we must have two equals candidates
+        Candidate candidate = controller.get( 1L );
+        assertEquals(testCandidate, candidate); // we must have two equals candidates
     }
 
 

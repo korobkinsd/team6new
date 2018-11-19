@@ -24,22 +24,22 @@ public class CandidateController {
 //        return this.candidateDao;
 //    }
 
-
     private final Logger logger = LoggerFactory.getLogger(CandidateController.class);
 
     @PostMapping("/candidate")
-    public ResponseEntity<?> save(@RequestBody Candidate candidate) {
+    public void save(@RequestBody Candidate candidate) {
         Long id = candidateDao.save(candidate);
-        return ResponseEntity.ok().body("New candidate has been saved with ID:" + id);
+        //return ResponseEntity.ok().body("New candidate has been saved with ID:" + id);
     }
 
     @GetMapping("/candidate/{id}")
-    public ResponseEntity<Candidate> get(@PathVariable("id") long id) {
+    public Candidate get(@PathVariable("id") long id) {
         Candidate candidate = candidateDao.get(id);
-        return ResponseEntity.ok().body(candidate);
+        return candidate;
+        //return ResponseEntity.ok().body(candidate);
     }
     @GetMapping("/candidate")
-    public ResponseEntity<List<Candidate>> list(
+    public List<Candidate> list(
                                            @RequestParam(value = "name", defaultValue = "")String name,
                                            @RequestParam(value = "surname", defaultValue = "")String surname,
                                            @RequestParam(value = "birthdayFrom", defaultValue = "")String birthdayFrom,
@@ -65,19 +65,20 @@ public class CandidateController {
         candidateFilter.setOrder(order);
         candidateFilter.setCandidateStates(listCandidateStates);
         List<Candidate> candidates = candidateDao.list(candidateFilter);
-        logger.debug("done");
-        return ResponseEntity.ok().body(candidates);
+        logger.debug("done, recs: " + candidates.size());
+        return candidates;
+        //return ResponseEntity.ok().body(candidates);
     }
 
     @PutMapping("/candidate/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody Candidate candidate) {
+    public void update(@PathVariable("id") Long id, @RequestBody Candidate candidate) {
         candidateDao.update(id, candidate);
-        return ResponseEntity.ok().body("Candidate [id=" + id.toString() + "] has been updated successfully.");
+        //return ResponseEntity.ok().body("Candidate [id=" + id.toString() + "] has been updated successfully.");
     }
 
     @DeleteMapping("/candidate/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    public void delete(@PathVariable("id") Long id) {
         candidateDao.delete(id);
-        return ResponseEntity.ok().body("Candidate [id=" + id.toString() + "] has been deleted successfully.");
+        //return ResponseEntity.ok().body("Candidate [id=" + id.toString() + "] has been deleted successfully.");
     }
 }
