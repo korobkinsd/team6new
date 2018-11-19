@@ -5,13 +5,10 @@ import com.staff.model.Candidate;
 import com.staff.model.Candidate_;
 import com.staff.util.filtering.CandidateFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController

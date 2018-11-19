@@ -9,7 +9,6 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Date;
 import javax.persistence.*;
@@ -71,8 +70,8 @@ public class Candidate {   // implements Serializable
     @Convert (converter = CandidateStateConverter.class)
     private CandidateState candidateState;
 
-    @Transient
-    private List<String> listCandidateState;
+    //@Transient
+    //private List<String> listCandidateState;
 
     @Transient
     private final Logger logger = LoggerFactory.getLogger(Candidate.class);
@@ -82,6 +81,7 @@ public class Candidate {   // implements Serializable
     //@JoinColumn( name = "CANDIDATE_ID", referencedColumnName = "ID")
     @JsonManagedReference
     private Collection<ContactDetails> contactDetailsList;
+
 
     private Collection<ContactDetails> getContactDetailsList() {
         return this.contactDetailsList;
@@ -131,9 +131,9 @@ public class Candidate {   // implements Serializable
         this.salary = salary;
     }
 
-    public final void setBirthday(Date birthday) {
+    /*public final void setBirthday(Date birthday) {
         this.birthday = birthday;
-    }
+    }*/
 
     public final void setBirthday(String birthday) {
         String[] validPatterns = {"dd.MM.yyyy","yyyy-MM-dd","dd/MM/yyyy","dd-MM-yyyy","dd/mm/yy"};
