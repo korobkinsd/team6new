@@ -1,7 +1,9 @@
 package com.staff.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+//import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -59,13 +62,18 @@ public class Candidate {   // implements Serializable
     @Min(0)
     private Double salary;
 
+    @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "candidate" )   //,CascadeType.PERSIST,CascadeType.MERGE
+    //@JsonBackReference
+    private List<ContactDetails> contactDetailsList;
+
     @Past
     @Temporal(value = TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthday;
 
+
     @NotNull(message="is required")
-    //@Enumerated(EnumType.STRING)
     @Column(name="CANDIDATE_STATE")
     @Convert (converter = CandidateStateConverter.class)
     private CandidateState candidateState;
@@ -73,21 +81,15 @@ public class Candidate {   // implements Serializable
     //@Transient
     //private List<String> listCandidateState;
 
+
     @Transient
     private final Logger logger = LoggerFactory.getLogger(Candidate.class);
 
-    @JsonBackReference
-    @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "candidate" )
-    //@JoinColumn( name = "CANDIDATE_ID", referencedColumnName = "ID")
-    @JsonManagedReference
-    private Collection<ContactDetails> contactDetailsList;
-
-
-    private Collection<ContactDetails> getContactDetailsList() {
+    private List<ContactDetails> getContactDetailsList() {
         return this.contactDetailsList;
     };
 
-    public final void setContactDetailsList(Collection<ContactDetails> contactDetailsList) {
+    public final void setContactDetailsList(List<ContactDetails> contactDetailsList) {
         this.contactDetailsList = contactDetailsList;
     }
 
@@ -161,6 +163,7 @@ public class Candidate {   // implements Serializable
         this.candidateState = candidateState;
     }
 
+    @JsonIgnore
     public final String getBirthdayAsString() {
         if (!(this.birthday == null)) {
             Format formatter = new SimpleDateFormat("dd.MM.yyyy");

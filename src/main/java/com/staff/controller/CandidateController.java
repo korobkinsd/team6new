@@ -3,12 +3,15 @@ package com.staff.controller;
 import com.staff.dao.CandidateDao;
 import com.staff.model.Candidate;
 import com.staff.model.Candidate_;
+import com.staff.model.ContactDetails;
 import com.staff.util.filtering.CandidateFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -20,19 +23,16 @@ public class CandidateController {
         this.candidateDao = candidateDao;
     }
 
-//    public CandidateDao getCandidateDao(){
-//        return this.candidateDao;
-//    }
-
     private final Logger logger = LoggerFactory.getLogger(CandidateController.class);
 
-    @PostMapping("/candidate")
+    @PostMapping(value = "/candidate", consumes="application/json;charset=UTF-8" )
     public void save(@RequestBody Candidate candidate) {
         Long id = candidateDao.save(candidate);
+        //logger.debug("done. candidate: " + candidate.toString());
         //return ResponseEntity.ok().body("New candidate has been saved with ID:" + id);
     }
 
-    @GetMapping("/candidate/{id}")
+    @GetMapping(value = "/candidate/{id}", produces="application/json;charset=UTF-8")
     public Candidate get(@PathVariable("id") long id) {
         Candidate candidate = candidateDao.get(id);
         return candidate;
@@ -70,7 +70,7 @@ public class CandidateController {
         //return ResponseEntity.ok().body(candidates);
     }
 
-    @PutMapping("/candidate/{id}")
+    @PutMapping(value = "/candidate/{id}", consumes="application/json;charset=UTF-8")
     public void update(@PathVariable("id") Long id, @RequestBody Candidate candidate) {
         candidateDao.update(id, candidate);
         //return ResponseEntity.ok().body("Candidate [id=" + id.toString() + "] has been updated successfully.");

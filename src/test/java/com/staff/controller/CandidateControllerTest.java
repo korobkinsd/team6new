@@ -6,15 +6,11 @@ import com.staff.model.Candidate_;
 import com.staff.util.filtering.CandidateFilter;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.Answer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-
-import javax.xml.ws.Response;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.*;
@@ -25,15 +21,15 @@ public class CandidateControllerTest {
 
     private CandidateController controller;
 
-    private final Logger logger = LoggerFactory.getLogger(CandidateControllerTest.class);
+    //private final Logger logger = LoggerFactory.getLogger(CandidateControllerTest.class);
 
     @Before
-    public void setUp() {
+    public void init() {
         controller = new CandidateController();
     }
 
     @Test
-    public void showAllUsers() {
+    public void showAll() {
         CandidateDao candidateDao = mock(CandidateDao.class);
         List<Candidate> listCandidate = new ArrayList<Candidate>();
         Candidate testCandidate = generateCandidate();
@@ -94,8 +90,35 @@ public class CandidateControllerTest {
         assertNotEquals( -1L, id);  // we must get id!=-1*/
     }
 
+    /*@Test
+    public void filterAll() {
+        CandidateDao candidateDao = mock(CandidateDao.class);
+        List<Candidate> listCandidate = new ArrayList<Candidate>();
+        Candidate testCandidate = generateCandidate();
+        listCandidate.add(testCandidate);  // 1
+        listCandidate.add(testCandidate);  // 2
+        testCandidate.setSalary(10000.00);
+        listCandidate.add(testCandidate);  // 3
+
+        CandidateFilter filter = generateFilter();
+
+        when(candidateDao.list( any(CandidateFilter.class) ))
+                .thenReturn(listCandidate);
+
+        controller.setCandidateDao(candidateDao);
+
+        List<Candidate> listCandidates = controller.list(filter.getName(), filter.getSurname(), filter.getBirthdayFromAsString(),
+                filter.getBirthdayToAsString(), filter.getSalaryFrom().toString(), filter.getSalaryTo().toString(), filter.getCandidateStates(),
+                filter.getPage().toString(), filter.getPagesize().toString(),
+                filter.getSortColumnName(), filter.getOrder());
+
+        assertEquals(2, listCandidates.size());  // we must have 2 candidates : (1) and (2), no (3) (salary > 9999.99)
+        assertNotEquals(testCandidate, listCandidates.get(0)); // we mustn't have two equals candidates!!
+    }*/
+
+
     @Test
-    public void getUser() {
+    public void get() {
         CandidateDao candidateDao = mock(CandidateDao.class);
         Candidate testCandidate = generateCandidate();
         when(candidateDao.get( anyLong() ))
@@ -105,7 +128,31 @@ public class CandidateControllerTest {
         assertEquals(testCandidate, candidate); // we must have two equals candidates
     }
 
+    @Test
+    public void save() {
+        CandidateDao candidateDao = mock(CandidateDao.class);
+        Candidate testCandidate = generateCandidate();
+        controller.setCandidateDao(candidateDao);
+        controller.save( testCandidate );
+        assertEquals(0, 0);
+    }
 
+    @Test
+    public void update() {
+        CandidateDao candidateDao = mock(CandidateDao.class);
+        Candidate testCandidate = generateCandidate();
+        controller.setCandidateDao(candidateDao);
+        controller.update( 1L, testCandidate );
+        assertEquals(0, 0);
+    }
+
+    @Test
+    public void delete() {
+        CandidateDao candidateDao = mock(CandidateDao.class);
+        controller.setCandidateDao(candidateDao);
+        controller.delete( 1L );
+        assertEquals( 0, 0);
+    }
 
     private CandidateFilter generateFilter() {
         CandidateFilter filter = new CandidateFilter();

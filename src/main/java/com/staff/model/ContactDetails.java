@@ -1,6 +1,9 @@
 package com.staff.model;
 
+//import com.fasterxml.jackson.annotation.JsonBackReference;
+//import org.hibernate.annotations.Cascade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,7 +16,6 @@ public class ContactDetails {
     public enum ContactType {
             EMAIL( "E-mail" )
         ,   MOBILEPHONE( "Mobile phone" )
-        ,   HOMEPHONE("Home phone")
         ,   ADDRESS("Address");
 
         private final String description;
@@ -51,11 +53,10 @@ public class ContactDetails {
     @Convert (converter = ContactTypeConverter.class)
     private ContactType contactType;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {
-            CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "CANDIDATE_ID", referencedColumnName = "ID")
-    @JsonIgnore
+
+    @ManyToOne(fetch = FetchType.EAGER) //, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "CANDIDATE_ID", referencedColumnName = "ID", updatable = false, insertable = true)   //
+    //@JsonManagedReference
     private Candidate candidate;
 
     public Candidate getCandidate() {
@@ -66,8 +67,8 @@ public class ContactDetails {
         this.candidate = candidate;
     }
 
-    public ContactType getContactType() {
-        return contactType;
+    public String getContactType() {
+        return contactType.getDescription();
     }
 
     public void setContactType(String contactType) {

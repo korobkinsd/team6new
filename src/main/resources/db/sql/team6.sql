@@ -154,10 +154,13 @@ insert into CANDIDATE (`NAME`, `SURNAME`, `BIRTHDAY`, `SALARY`, `CANDIDATE_STATE
 insert into CANDIDATE (`NAME`, `SURNAME`, `BIRTHDAY`, `SALARY`, `CANDIDATE_STATE`) values ('Зайцев','Стёпа','1997-02-20', 450.55, 'Активен');
 
 
+
 create table if not exists CONTACT_DETAILS
-( `CANDIDATE_ID` bigint not null
+( `ID` bigint not null AUTO_INCREMENT
+, `CANDIDATE_ID` bigint not null
 , `CONTACT_TYPE` enum ('Mobile phone','E-mail','Address') not null
 , `CONTACT_DETAILS` varchar(1000) not null
+, primary key (`ID`)
 , index `contactDetails_I01` (`CANDIDATE_ID`)
 , index `contactDetails_I02` (`CONTACT_TYPE`)
 );
@@ -198,6 +201,7 @@ values (
 , 'Address'
 , 'Минск, пл. Парижской Коммуны, 1'
 );
+
 
 
 create table if not exists CANDIDATE_EXPERIENCE
