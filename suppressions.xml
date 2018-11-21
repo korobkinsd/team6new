@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC "-//Puppy Crawl//DTD Suppressions 1.0//EN" "http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
+
+<suppressions>
+  <suppress checks="JavadocPackage" files="."/>
+  <suppress checks="JavadocType" files="."/>
+  <suppress checks="JavadocMethod" files="."/>
+  <suppress checks="JavadocVariable" files="."/>
+
+  <suppress checks="NoWhitespaceBefore" files="."/>
+  <suppress checks="WhitespaceAround" files="."/>
+  <suppress checks="WhitespaceAfter" files="."/>
+  <suppress checks="LeftCurly" files="."/>
+  <suppress checks="RightCurly" files="."/>
+
+  <suppress checks="LineLength" files="."/>
+  <suppress checks="NewlineAtEndOfFile" files="."/>
+  <suppress checks="RegexpSingleline" files="."/>
+
+  <suppress checks="ParenPad" files="."/>
+  <suppress checks="MethodParamPad" files="."/>
+  <suppress checks="MagicNumber" files="."/>
+
+  <suppress checks="AvoidInlineConditionals" files="."/>
+
+  <suppress checks="MethodName" files="."/>
+  <suppress checks="MemberName" files="."/>
+  <suppress checks="LocalVariableName" files="."/>
+  <suppress checks="ParameterName" files="."/>
+
+  <suppress checks="GenericWhitespace" files="."/>
+  <suppress checks="HiddenField" files="."/>
+  <suppress checks="OperatorWrap" files="."/>
+  <suppress checks="FileTabCharacter" files="."/>
+
+  <suppress checks="AvoidStarImport" files="."/>
+  <suppress checks="UnusedImports" files="."/>
+  <suppress checks="TodoComment" files="."/>
+
+  <suppress checks="DesignForExtension" files="."/>
+  <suppress checks="FinalParameters" files="."/>
+  <suppress checks="VisibilityModifier" files="."/>
+  <suppress checks="NeedBraces" files="."/>
+
+  <suppress checks="ParameterNumber" files="."/>
+  <suppress checks="TypeName" files="."/>
+  <suppress checks="HideUtilityClassConstructor" files="."/>
+
+</suppressions>

@@ -1,7 +1,6 @@
 package com.staff.model;
 
 //import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 //import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.slf4j.Logger;
@@ -69,7 +68,7 @@ public class Candidate {   // implements Serializable
     @Past
     @Temporal(value = TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthday;
 
 
@@ -85,7 +84,7 @@ public class Candidate {   // implements Serializable
     @Transient
     private final Logger logger = LoggerFactory.getLogger(Candidate.class);
 
-    private List<ContactDetails> getContactDetailsList() {
+    public List<ContactDetails> getContactDetailsList() {
         return this.contactDetailsList;
     };
 
@@ -109,9 +108,9 @@ public class Candidate {   // implements Serializable
         return salary;
     }
 
-    /*public final Date getBirthday() {
+    public final Date getBirthday() {
         return birthday;
-    }*/
+    }
 
     public final CandidateState getCandidateState() {
         return candidateState;
@@ -133,11 +132,11 @@ public class Candidate {   // implements Serializable
         this.salary = salary;
     }
 
-    /*public final void setBirthday(Date birthday) {
+    public final void setBirthday(Date birthday) {
         this.birthday = birthday;
-    }*/
+    }
 
-    public final void setBirthday(String birthday) {
+    public final void setBirthdayAsString(String birthday) {
         String[] validPatterns = {"dd.MM.yyyy","yyyy-MM-dd","dd/MM/yyyy","dd-MM-yyyy","dd/mm/yy"};
         SimpleDateFormat formatter = new SimpleDateFormat();
         for (String validPattern : validPatterns) {

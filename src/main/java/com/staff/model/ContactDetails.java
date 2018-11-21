@@ -1,6 +1,6 @@
 package com.staff.model;
 
-//import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 //import org.hibernate.annotations.Cascade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 //import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -57,6 +57,7 @@ public class ContactDetails {
     @ManyToOne(fetch = FetchType.EAGER) //, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "CANDIDATE_ID", referencedColumnName = "ID", updatable = false, insertable = true)   //
     //@JsonManagedReference
+    @JsonBackReference
     private Candidate candidate;
 
     public Candidate getCandidate() {

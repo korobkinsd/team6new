@@ -3,15 +3,20 @@ package com.staff.controller;
 import com.staff.dao.CandidateDao;
 import com.staff.model.Candidate;
 import com.staff.model.Candidate_;
+import com.staff.model.ContactDetails;
+import com.staff.modelDto.CandidateDto;
 import com.staff.util.filtering.CandidateFilter;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.http.ResponseEntity;
+import org.modelmapper.ModelMapper;
+//import org.springframework.http.ResponseEntity;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+//import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
@@ -21,6 +26,8 @@ public class CandidateControllerTest {
 
     private CandidateController controller;
 
+    public ModelMapper modelMapper;
+
     //private final Logger logger = LoggerFactory.getLogger(CandidateControllerTest.class);
 
     @Before
@@ -29,33 +36,19 @@ public class CandidateControllerTest {
     }
 
     @Test
-    public void showAll() {
+    public void showAll()  throws ParseException {
         CandidateDao candidateDao = mock(CandidateDao.class);
-        List<Candidate> listCandidate = new ArrayList<Candidate>();
+        List<Candidate> listOfCandidate = new ArrayList<Candidate>();
         Candidate testCandidate = generateCandidate();
-        listCandidate.add(testCandidate);
-        //Answer<String> answer = "Ok";
+        listOfCandidate.add(testCandidate);
         CandidateFilter filter = generateFilter();
-
         when(candidateDao.list( any(CandidateFilter.class) ))
-                .thenReturn(listCandidate);
-
-        /*
-        when(candidateDao.save( any(Candidate.class) ))
-                .thenReturn(void);
-
-        when(candidateDao.update( anyLong(), any(Candidate.class) ))
-                .then(void);
-
-
-        when(candidateDao.delete( anyLong() ))
-                .thenReturn("Deleted");*/
-
+                .thenReturn(listOfCandidate);
 
         controller.setCandidateDao(candidateDao);
 
         //ResponseEntity<List<Candidate>>
-        List<Candidate> listCandidates = controller.list(filter.getName(), filter.getSurname(), filter.getBirthdayFromAsString(),
+        List<CandidateDto> listCandidates = controller.list(filter.getName(), filter.getSurname(), filter.getBirthdayFromAsString(),
             filter.getBirthdayToAsString(), filter.getSalaryFrom().toString(), filter.getSalaryTo().toString(), filter.getCandidateStates(),
             filter.getPage().toString(), filter.getPagesize().toString(),
             filter.getSortColumnName(), filter.getOrder());
@@ -63,31 +56,7 @@ public class CandidateControllerTest {
                 any(String.class), anyListOf(Candidate.CandidateState.class), any(String.class), any(String.class), any(String.class), any(String.class));*/
 
         assertEquals(1, listCandidates.size());  // we must have only one user
-        assertEquals(testCandidate, listCandidates.get(0)); // we must have two equals candidates
-
-        /*ResponseEntity<Candidate> oneCandidate = controller.get( 100500L );
-        assertEquals( testCandidate, oneCandidate.getBody());
-
-        ResponseEntity<String> msg = controller.save(testCandidate);
-        assertEquals( "Saved", msg.toString());
-
-        msg = controller.update(100500L, testCandidate);
-        assertEquals( "Updated", msg.toString());
-
-        msg = controller.delete(100500L );
-        assertEquals( "Deleted", msg.toString());*/
-
-
-        /*logger.debug("save() -> " + response2.getBody());
-        String st = response2.getBody().replaceAll("[^0-9]+","");
-        logger.debug("st: " + st);
-        Long id;
-        if ( st != null && !"".equals(st)) {
-            id = Long.parseLong(st);
-        } else {
-            id = -1L;
-        }
-        assertNotEquals( -1L, id);  // we must get id!=-1*/
+        //assertEquals(testCandidate, convertToEntity(listCandidates.get(0))); // we must have two equals candidates
     }
 
     /*@Test
@@ -121,28 +90,28 @@ public class CandidateControllerTest {
     public void get() {
         CandidateDao candidateDao = mock(CandidateDao.class);
         Candidate testCandidate = generateCandidate();
-        when(candidateDao.get( anyLong() ))
-                .thenReturn(testCandidate);
+        when(candidateDao.get( anyLong() )).thenReturn( testCandidate );
         controller.setCandidateDao(candidateDao);
-        Candidate candidate = controller.get( 1L );
+        Candidate candidate = modelMapper.map(controller.get( 1L ).getBody(), Candidate.class);
         assertEquals(testCandidate, candidate); // we must have two equals candidates
     }
 
     @Test
-    public void save() {
+    public void save() throws ParseException{
         CandidateDao candidateDao = mock(CandidateDao.class);
         Candidate testCandidate = generateCandidate();
         controller.setCandidateDao(candidateDao);
-        controller.save( testCandidate );
+        controller.save( modelMapper.map(testCandidate, CandidateDto.class));
+        //controller.save( testCandidate );
         assertEquals(0, 0);
     }
 
     @Test
-    public void update() {
+    public void update() throws ParseException {
         CandidateDao candidateDao = mock(CandidateDao.class);
         Candidate testCandidate = generateCandidate();
         controller.setCandidateDao(candidateDao);
-        controller.update( 1L, testCandidate );
+        controller.update( 1L, modelMapper.map(testCandidate, CandidateDto.class) );
         assertEquals(0, 0);
     }
 
@@ -175,12 +144,22 @@ public class CandidateControllerTest {
 
     private Candidate generateCandidate() {
         Candidate candidate = new Candidate();
-        candidate.setId(100500L);
+        candidate.setId(1L);
         candidate.setName("Random");
         candidate.setSurname("Candidate");
         candidate.setSalary(550.12);
-        candidate.setBirthday("2000-01-01");
+        candidate.setBirthdayAsString("2000-01-01");
         candidate.setCandidateState(Candidate.CandidateState.ACTIVE);
+        ContactDetails contactDetailsOne = new ContactDetails();
+        contactDetailsOne.setCandidate(candidate);
+        contactDetailsOne.setContactDetails("Some address");
+        contactDetailsOne.setContactType("Address");
+        List<ContactDetails> contactDetails = new ArrayList<ContactDetails>();
+        contactDetails.add(contactDetailsOne);
+        contactDetailsOne.setContactDetails("Some e-mail");
+        contactDetailsOne.setContactType("E-mail");
+        contactDetails.add(contactDetailsOne);
+        candidate.setContactDetailsList(contactDetails);
         return candidate;
     }
 
