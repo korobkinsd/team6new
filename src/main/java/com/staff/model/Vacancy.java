@@ -2,7 +2,11 @@
 package com.staff.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "vacancy", schema = "team6")
@@ -17,21 +21,50 @@ public class Vacancy  {
     private String position;
 
     
-    @Column(name = "idDeveloper")
-    private Long idDeveloper;
+  /*  @Column(name = "DEVELOPER_ID")
+    private Long idDeveloper;*/
 
     
-    @Column(name = "salaryFrom")
+    @Column(name = "salary_From")
     private double salaryFrom;
     
-    @Column(name = "salaryTo")
+    @Column(name = "salary_To")
     private double salaryTo;
     
-    @Column(name = "experienceYearsRequire")
+    @Column(name = "experience_Years_Require")
     private double experienceYearsRequire;
     
-    @Column(name = "state")
+    @Column(name = "vacancy_state")
     private String state;
+
+    @ManyToOne(fetch = FetchType.EAGER )
+    @JsonIgnore
+    @JoinColumn(name = "DEVELOPER_ID")
+    private User developer;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vacancy vacancy = (Vacancy) o;
+        return Objects.equals(getId(), vacancy.getId()) &&
+                Objects.equals(getPosition(), vacancy.getPosition()/* &&
+                Objects.equals(getIdDeveloper(), vacancy.getIdDeveloper()*/);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getPosition());
+    }
+
+    public User getDeveloper() {
+        return this.developer;
+    }
+
+    public void setUser(User developer) {
+        this.developer = developer;
+    }
+
 
     public String getState() {
         return state;
@@ -46,8 +79,7 @@ public class Vacancy  {
     }
 
     public void setExperienceYearsRequire(double experienceYearsRequire) {
-        this.experienceYearsRequire = experienceYearsRequire;
-    }
+        this.experienceYearsRequire = experienceYearsRequire;   }
 
 
 
@@ -68,13 +100,13 @@ public class Vacancy  {
         this.position = position;
     }
 
-    public Long getIdDeveloper() {
+  /*  public Long getIdDeveloper() {
         return idDeveloper;
     }
 
     public void setIdDeveloper(Long idDeveloper) {
         this.idDeveloper = idDeveloper;
-    }
+    }*/
 
     public double getSalaryFrom() {
         return salaryFrom;
@@ -95,7 +127,8 @@ public class Vacancy  {
 
     @Override
     public String toString() {
-        return "Vacancy [id=" + id + ", position=" + position + ", idDeveloper=" + idDeveloper + ", salaryFrom=" + salaryFrom
+
+        return "Vacancy [id=" + id + ", position=" + position + ", idDeveloper=" + ", salaryFrom=" + salaryFrom
                 + ", salaryTo=" + salaryTo + ", experienceYearsRequire "+experienceYearsRequire+"]" + isNew();
     }
 

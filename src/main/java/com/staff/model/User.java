@@ -1,5 +1,8 @@
 package com.staff.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -17,11 +20,12 @@ public class User {
     /*private Collection<Interviewfeedback> interviewfeedbacksById;
     private Collection<Userroles> userrolesById;
     private Collection<Vacancy> vacanciesById;*/
-
+   private List<Vacancy> vacancies;
     private List<Role> roles;
 
 
     @Transient
+
     private List<String> listUserStatus;
 
     @Id
@@ -138,13 +142,14 @@ public class User {
     public void setUserrolesById(Collection<Userroles> userrolesById) {
         this.userrolesById = userrolesById;
     }
-
-    @OneToMany(mappedBy = "userByIdDeveloper")
-    public Collection<Vacancy> getVacanciesById() {
-        return vacanciesById;
+*/
+    @OneToMany(mappedBy = "developer")
+    @JsonIgnore
+    public List<Vacancy> getVacancies() {
+        return this.vacancies;
     }
 
-    public void setVacanciesById(Collection<Vacancy> vacanciesById) {
-        this.vacanciesById = vacanciesById;
-    }*/
+    public void setVacancies(List<Vacancy> vacancies) {
+        this.vacancies = vacancies;
+    }
 }

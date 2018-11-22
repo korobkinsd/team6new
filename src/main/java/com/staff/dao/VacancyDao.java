@@ -1,6 +1,7 @@
 package com.staff.dao;
 
 import com.staff.model.Vacancy;
+import com.staff.util.filtering.SortPagining;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface VacancyDao {
 
    Vacancy get(long id);
 
-   List<Vacancy> list(Vacancy vacancy, int pageNumber, int pageSize);
+   List<Vacancy> list(SortPagining sortPagining);
 
    void update(long id, Vacancy vacancy);
 
