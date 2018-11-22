@@ -2,17 +2,14 @@ package com.staff.model;
 
 //import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -61,8 +58,10 @@ public class Candidate {   // implements Serializable
     @Min(0)
     private Double salary;
 
-    @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "candidate" )   //,CascadeType.PERSIST,CascadeType.MERGE
+    @OneToMany( fetch = FetchType.EAGER, cascade = {CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE}, mappedBy = "candidate" )   //,  ,
+    //@JoinColumn(name = "ID", referencedColumnName = "CANDIDATE_ID")   // , updatable = true, insertable = true
     //@JsonBackReference
+    @JsonManagedReference
     private List<ContactDetails> contactDetailsList;
 
     @Past
@@ -90,6 +89,21 @@ public class Candidate {   // implements Serializable
 
     public final void setContactDetailsList(List<ContactDetails> contactDetailsList) {
         this.contactDetailsList = contactDetailsList;
+    }
+
+    public final void addContactDetails (ContactDetails contactDetails) {
+        contactDetails.setCandidate(this);
+        this.contactDetailsList.add(contactDetails);
+    }
+
+    public final void delContactDetails (ContactDetails contactDetails) {
+        Iterator<ContactDetails> iter = this.contactDetailsList.iterator();
+        while(iter.hasNext()){
+            if(iter.next().equals(contactDetails))
+                iter.remove();
+        }
+        //this.contactDetailsList.remove(contactDetails);
+        contactDetails.setCandidate(null);
     }
 
     public final Long getId() {

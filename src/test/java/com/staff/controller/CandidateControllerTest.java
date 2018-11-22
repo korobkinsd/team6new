@@ -151,7 +151,7 @@ public class CandidateControllerTest {
         candidate.setBirthdayAsString("2000-01-01");
         candidate.setCandidateState(Candidate.CandidateState.ACTIVE);
         ContactDetails contactDetailsOne = new ContactDetails();
-        contactDetailsOne.setCandidate(candidate);
+        //contactDetailsOne.setCandidate(candidate);
         contactDetailsOne.setContactDetails("Some address");
         contactDetailsOne.setContactType("Address");
         List<ContactDetails> contactDetails = new ArrayList<ContactDetails>();

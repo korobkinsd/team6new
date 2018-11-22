@@ -54,7 +54,7 @@ public class ContactDetails {
     private ContactType contactType;
 
 
-    @ManyToOne(fetch = FetchType.EAGER) //, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}) //, )
     @JoinColumn(name = "CANDIDATE_ID", referencedColumnName = "ID", updatable = false, insertable = true)   //
     //@JsonManagedReference
     @JsonBackReference
@@ -117,8 +117,7 @@ public class ContactDetails {
             return false;
         }
         ContactDetails that = (ContactDetails) o;
-        return  Objects.equals(id, that.id) &&
-                Objects.equals(contactType, that.contactType) &&
+        return  Objects.equals(contactType, that.contactType) &&
                 Objects.equals(contactDetails, that.contactDetails);
     }
 

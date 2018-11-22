@@ -2,6 +2,7 @@ package com.staff.dao;
 
 import com.staff.metamodel.Candidate_;
 import com.staff.model.Candidate;
+import com.staff.model.ContactDetails;
 import com.staff.util.filtering.CandidateFilter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,8 +32,18 @@ public class CandidateDaoImpl implements CandidateDao {
     @Override
     @Transactional
     public Long save(Candidate candidate) {
-        sessionFactory.getCurrentSession().save(candidate);
-        return candidate.getId();
+        Session session = sessionFactory.getCurrentSession();
+        List<ContactDetails> contactDetails = candidate.getContactDetailsList();
+        candidate.setContactDetailsList( new ArrayList<ContactDetails>());
+        session.save(candidate);
+        session.flush();
+        Long id = candidate.getId();
+        Candidate candidateForUpdate = session.get(Candidate.class, id);
+        for ( ContactDetails contactDetailsOne : contactDetails) {
+            candidateForUpdate.addContactDetails(contactDetailsOne);
+        }
+        session.flush();
+        return id;
     }
 
     @Override
@@ -77,8 +88,22 @@ public class CandidateDaoImpl implements CandidateDao {
     @Transactional
     public void update(Long id, Candidate candidate) {
         Session session = sessionFactory.getCurrentSession();
-        Candidate newObj = session.byId(Candidate.class).load(id);
-        newObj.setName(candidate.getName());
+        Candidate candidateForUpdate = session.get(Candidate.class,id);
+        candidateForUpdate.setName(candidate.getName());
+        candidateForUpdate.setSurname(candidate.getSurname());
+        candidateForUpdate.setSalary(candidate.getSalary());
+        candidateForUpdate.setBirthday(candidate.getBirthday());
+        candidateForUpdate.setCandidateState(candidate.getCandidateState());
+        List<ContactDetails> oldContactDetails = candidateForUpdate.getContactDetailsList();
+        for ( ContactDetails contactDetailsOne : oldContactDetails) {
+            candidateForUpdate.delContactDetails(contactDetailsOne);
+        }
+        session.flush();
+        candidateForUpdate = session.get(Candidate.class,id);
+        //candidateForUpdate.setContactDetailsList( new ArrayList<>());
+        for ( ContactDetails contactDetailsOne : candidate.getContactDetailsList()) {
+            candidateForUpdate.addContactDetails(contactDetailsOne);
+        }
         session.flush();
     }
 
@@ -88,6 +113,7 @@ public class CandidateDaoImpl implements CandidateDao {
         Session session = sessionFactory.getCurrentSession();
         Candidate delObj = session.byId(Candidate.class).load(id);
         session.delete(delObj);
+        session.flush();
     }
 
 }

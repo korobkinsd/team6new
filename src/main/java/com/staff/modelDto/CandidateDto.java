@@ -1,6 +1,8 @@
 package com.staff.modelDto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.staff.model.Candidate;
 import com.staff.model.ContactDetails;
 
@@ -25,7 +27,12 @@ public class CandidateDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthday;
 
-    private Candidate.CandidateState candidateState;
+    //@JsonIgnore
+    //@JsonProperty("candidateStateEnum")
+    //private Candidate.CandidateState candidateState;
+
+    @JsonProperty("candidateState")
+    private String candidateStateAsString;
 
     private List<ContactDetails> contactDetailsList;
 
@@ -54,8 +61,12 @@ public class CandidateDto {
         return dateFormat.parse(this.birthday);
     }*/
 
-    public final Candidate.CandidateState getCandidateState() {
-        return candidateState;
+    //public final Candidate.CandidateState getCandidateState() {
+    //    return candidateState;
+    //}
+
+    public final String getCandidateStateAsString() {
+        return candidateStateAsString;
     }
 
     public List<ContactDetails> getContactDetailsList() {
@@ -87,8 +98,12 @@ public class CandidateDto {
         this.birthday = dateFormat.format(date);
     }*/
 
-    public final void setCandidateState(Candidate.CandidateState candidateState) {
-        this.candidateState = candidateState;
+    //public final void setCandidateState(Candidate.CandidateState value) {
+    //    this.candidateState = value;
+    //}
+
+    public final void setCandidateStateAsString(String value) {
+        this.candidateStateAsString = value;
     }
 
     public final void setContactDetailsList(List<ContactDetails> contactDetailsList) {
