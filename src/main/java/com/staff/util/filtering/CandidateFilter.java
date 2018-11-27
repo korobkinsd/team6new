@@ -2,6 +2,9 @@ package com.staff.util.filtering;
 
 
 import com.staff.model.Candidate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,7 +14,11 @@ import java.util.List;
 /*
  * Filter for searching candidates
  */
+@SuppressWarnings("PMD.EmptyCatchBlock")
 public class CandidateFilter {
+
+    private final Logger logger = LoggerFactory.getLogger(CandidateFilter.class);
+
     private String name;
 
     private String surname;
@@ -52,19 +59,31 @@ public class CandidateFilter {
 
     public final void setBirthdayFrom(String birthdayFrom) {
         if (birthdayFrom!=null && !"".equals(birthdayFrom)) {
-            String[] validPatterns = {"dd.MM.yyyy", "dd/MM/yyyy", "dd-MM-yyyy", "dd/mm/yy", "yyyy-MM-dd"};
+            /*String[] validPatterns = {"dd.MM.yyyy", "dd/MM/yyyy", "dd-MM-yyyy", "dd/mm/yy", "yyyy-MM-dd"};*/
+            String validPattern = "yyyy-MM-dd";
             SimpleDateFormat formatter = new SimpleDateFormat();
+            try {
+                formatter.applyPattern(validPattern);
+                formatter.setLenient(false);
+                Date ret = new Date(formatter.parse(birthdayFrom).getTime());
+                this.birthdayFrom = ret;
+            } catch (ParseException e) {
+                    logger.error("Wrong pattern");
+                    this.birthdayFrom = null;
+            }
+            /*
             for (String validPattern : validPatterns) {
                 try {
                     formatter.applyPattern(validPattern);
                     formatter.setLenient(false);
                     Date ret = new Date(formatter.parse(birthdayFrom).getTime());
                     this.birthdayFrom = ret;
+                    return;
                 } catch (ParseException e) {
                     //ok, just take next pattern
-                    return;//TODO add exception
+                    logger.error("Wrong pattern");
                 }
-            }
+            }*/
         } else {
             this.birthdayFrom = null;
         }
@@ -85,19 +104,30 @@ public class CandidateFilter {
 
     public final void setBirthdayTo(String birthdayTo) {
         if (birthdayTo!=null && !"".equals(birthdayTo)) {
-            String[] validPatterns = {"dd.MM.yyyy", "dd/MM/yyyy", "dd-MM-yyyy", "dd/mm/yy", "yyyy-MM-dd"};
+            //String[] validPatterns = {"dd.MM.yyyy", "dd/MM/yyyy", "dd-MM-yyyy", "dd/mm/yy", "yyyy-MM-dd"};
+            String validPattern = "yyyy-MM-dd";
             SimpleDateFormat formatter = new SimpleDateFormat();
-            for (String validPattern : validPatterns) {
+            try {
+                formatter.applyPattern(validPattern);
+                formatter.setLenient(false);
+                Date ret = new Date(formatter.parse(birthdayTo).getTime());
+                this.birthdayTo = ret;
+            } catch (ParseException e) {
+                logger.error("Wrong pattern");
+                this.birthdayTo = null;
+            }
+            /*for (String validPattern : validPatterns) {
                 try {
                     formatter.applyPattern(validPattern);
                     formatter.setLenient(false);
                     Date ret = new Date(formatter.parse(birthdayTo).getTime());
                     this.birthdayTo = ret;
+                    return;
                 } catch (ParseException e) {
                     //ok, just take next pattern
-                    return;//TODO add exception
+                    logger.error("Wrong pattern");
                 }
-            }
+            }*/
         } else {
             this.birthdayTo = null;
         }

@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 //import org.springframework.http.ResponseEntity;
+//import org.springframework.http.ResponseEntity;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import java.text.ParseException;
@@ -100,16 +101,21 @@ public class CandidateControllerTest {
     public void save() throws ParseException{
         CandidateDao candidateDao = mock(CandidateDao.class);
         Candidate testCandidate = generateCandidate();
+
+        when(candidateDao.save( any(Candidate.class) ))
+                .thenReturn(testCandidate.getId());
         controller.setCandidateDao(candidateDao);
-        controller.save( modelMapper.map(testCandidate, CandidateDto.class));
-        //controller.save( testCandidate );
-        assertEquals(0, 0);
+        CandidateDto candidateDto = controller.save( modelMapper.map(testCandidate, CandidateDto.class)).getBody();
+        //controller.save( convertToDto(testCandidate );
+        assertEquals(testCandidate, modelMapper.map(candidateDto,Candidate.class));
     }
 
     @Test
     public void update() throws ParseException {
         CandidateDao candidateDao = mock(CandidateDao.class);
         Candidate testCandidate = generateCandidate();
+        /*when(candidateDao.update( anyLong(), any(Candidate.class) ))
+                .thenReturn(testCandidate.getId());*/
         controller.setCandidateDao(candidateDao);
         controller.update( 1L, modelMapper.map(testCandidate, CandidateDto.class) );
         assertEquals(0, 0);

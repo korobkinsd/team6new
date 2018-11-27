@@ -101,6 +101,7 @@ public class Candidate {   // implements Serializable
         while(iter.hasNext()){
             if(iter.next().equals(contactDetails))
                 iter.remove();
+                //this.contactDetailsList.remove(iter.next());
         }
         //this.contactDetailsList.remove(contactDetails);
         contactDetails.setCandidate(null);

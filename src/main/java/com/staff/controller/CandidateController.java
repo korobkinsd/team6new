@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +28,7 @@ public class CandidateController {
         this.candidateDao = candidateDao;
     }
 
-    private final Logger logger = LoggerFactory.getLogger(CandidateController.class);
+    //private final Logger logger = LoggerFactory.getLogger(CandidateController.class);
 
     @PostMapping(value = "/candidate", consumes="application/json;charset=UTF-8" )
     public ResponseEntity<CandidateDto> save(@RequestBody CandidateDto candidateDto)  throws ParseException {

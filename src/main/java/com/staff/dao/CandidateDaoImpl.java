@@ -94,16 +94,17 @@ public class CandidateDaoImpl implements CandidateDao {
         candidateForUpdate.setSalary(candidate.getSalary());
         candidateForUpdate.setBirthday(candidate.getBirthday());
         candidateForUpdate.setCandidateState(candidate.getCandidateState());
+
         List<ContactDetails> oldContactDetails = candidateForUpdate.getContactDetailsList();
         for ( ContactDetails contactDetailsOne : oldContactDetails) {
             candidateForUpdate.delContactDetails(contactDetailsOne);
         }
-        session.flush();
-        candidateForUpdate = session.get(Candidate.class,id);
         //candidateForUpdate.setContactDetailsList( new ArrayList<>());
         for ( ContactDetails contactDetailsOne : candidate.getContactDetailsList()) {
             candidateForUpdate.addContactDetails(contactDetailsOne);
         }
+        Candidate candidateMerged =  (Candidate)session.merge(candidateForUpdate);
+        logger.debug("Updated: " + candidateMerged.toString());
         session.flush();
     }
 

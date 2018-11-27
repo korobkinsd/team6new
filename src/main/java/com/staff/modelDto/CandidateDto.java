@@ -1,9 +1,9 @@
 package com.staff.modelDto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.staff.model.Candidate;
+//import com.staff.model.Candidate;
 import com.staff.model.ContactDetails;
 
 //import java.text.ParseException;

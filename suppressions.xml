@@ -45,5 +45,6 @@
   <suppress checks="ParameterNumber" files="."/>
   <suppress checks="TypeName" files="."/>
   <suppress checks="HideUtilityClassConstructor" files="."/>
+  <suppress checks="EmptyCatchBlock" files="."/>
 
 </suppressions>

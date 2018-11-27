@@ -101,14 +101,6 @@ public class ContactDetails {
     }*/
 
     @Override
-    public final String toString() {
-        return "ContactDetails{" +
-                "contactType=" + contactType.toString() +
-                ", contactDetails='" + contactDetails + '\'' +
-                '}';
-    }
-
-    @Override
     public final boolean equals(final Object o) {
         if (this == o) {
             return true;
@@ -144,4 +136,14 @@ public class ContactDetails {
             return ContactType.getByString( value );
         }
     }
+
+    @Override
+    public final String toString() {
+        return "[" +
+                "id=" + (this.id != null ? this.id.toString() : "" )+
+                ", contactDetails='" + (this.contactDetails != null ? this.getContactDetails() : "")+ '\'' +
+                ", contactType='" + (this.contactType != null ?this.getContactType() : "") + '\'' +
+                "]";
+    }
+
 }
