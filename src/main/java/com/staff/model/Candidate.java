@@ -107,6 +107,14 @@ public class Candidate {   // implements Serializable
         contactDetails.setCandidate(null);
     }
 
+    public final void clearContactDetails () {
+        this.contactDetailsList = new ArrayList<ContactDetails>();
+    }
+        /*Iterator<ContactDetails> iter = this.contactDetailsList.iterator();
+        while(iter.hasNext()){
+                iter.remove();
+        }*/
+
     public final Long getId() {
         return id;
     }
