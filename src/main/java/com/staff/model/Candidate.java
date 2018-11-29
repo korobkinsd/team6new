@@ -76,9 +76,6 @@ public class Candidate {   // implements Serializable
     @Convert (converter = CandidateStateConverter.class)
     private CandidateState candidateState;
 
-    //@Transient
-    //private List<String> listCandidateState;
-
 
     @Transient
     private final Logger logger = LoggerFactory.getLogger(Candidate.class);
@@ -90,30 +87,6 @@ public class Candidate {   // implements Serializable
     public final void setContactDetailsList(List<ContactDetails> contactDetailsList) {
         this.contactDetailsList = contactDetailsList;
     }
-
-    public final void addContactDetails (ContactDetails contactDetails) {
-        contactDetails.setCandidate(this);
-        this.contactDetailsList.add(contactDetails);
-    }
-
-    public final void delContactDetails (ContactDetails contactDetails) {
-        Iterator<ContactDetails> iter = this.contactDetailsList.iterator();
-        while(iter.hasNext()){
-            if(iter.next().equals(contactDetails))
-                iter.remove();
-                //this.contactDetailsList.remove(iter.next());
-        }
-        //this.contactDetailsList.remove(contactDetails);
-        contactDetails.setCandidate(null);
-    }
-
-    public final void clearContactDetails () {
-        this.contactDetailsList = new ArrayList<ContactDetails>();
-    }
-        /*Iterator<ContactDetails> iter = this.contactDetailsList.iterator();
-        while(iter.hasNext()){
-                iter.remove();
-        }*/
 
     public final Long getId() {
         return id;
@@ -193,25 +166,7 @@ public class Candidate {   // implements Serializable
         } else {
             return "";
         }
-        //return String.format("%td.%tm.%tY",birthday,birthday,birthday);
     }
-
-    // get a string like '01.03.2015', parse it and set birthday of Candidate
-    /*public void setBirthday(String s) {
-
-        if (s == null) {
-            return;
-        }
-        try {
-            int day = Integer.parseInt(s.substring(0, 2));
-            int month = Integer.parseInt(s.substring(3, 5))-1;
-            int year = Integer.parseInt(s.substring(6, 10));
-            birthday.set(year, month, day);
-        } catch (Exception e) {
-            e.printStackTrace();
-            birthday.set(1900, Calendar.JANUARY, 1);
-        }
-    }*/
 
     @Override
     public final boolean equals(Object o) {
@@ -223,9 +178,6 @@ public class Candidate {   // implements Serializable
         }
         Candidate candidate = (Candidate) o;
         return  Objects.equals(id,candidate.id) &&
-                //Double.compare(candidate.salary, salary) == 0 &&
-                //Objects.equals(name, candidate.name) &&
-                //Objects.equals(surname, candidate.surname) &&
                 Objects.equals(birthday, candidate.birthday) &&
                 Objects.equals(candidateState, candidate.candidateState);
     }
@@ -248,16 +200,6 @@ public class Candidate {   // implements Serializable
                 ", contactDetails: " + contactDetails.toString()+
                 "]";
     }
-
-    /*@Override
-    public final void setForeignKey(final String foreignKey) {
-        this.id = Integer.parseInt(foreignKey);
-    }
-
-    @Override
-    public final String getForeignKey() {
-        return this.id != null ? this.id.toString() : "-1";
-    }*/
 
     @Converter
     public static class CandidateStateConverter

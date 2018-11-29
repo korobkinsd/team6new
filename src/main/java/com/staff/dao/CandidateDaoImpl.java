@@ -18,7 +18,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Repository
@@ -29,23 +28,6 @@ public class CandidateDaoImpl implements CandidateDao {
     private SessionFactory sessionFactory;
 
     private final Logger logger = LoggerFactory.getLogger(CandidateDaoImpl.class);
-
-    @Override
-    @Transactional
-    public Long save(Candidate candidate) {
-        Session session = sessionFactory.getCurrentSession();
-        List<ContactDetails> contactDetails = candidate.getContactDetailsList();
-        candidate.setContactDetailsList( new ArrayList<ContactDetails>());
-        session.save(candidate);
-        session.flush();
-        Long id = candidate.getId();
-        Candidate candidateForUpdate = session.get(Candidate.class, id);
-        for ( ContactDetails contactDetailsOne : contactDetails) {
-            candidateForUpdate.addContactDetails(contactDetailsOne);
-        }
-        session.flush();
-        return id;
-    }
 
     @Override
     public Candidate get(Long id) {
@@ -78,7 +60,6 @@ public class CandidateDaoImpl implements CandidateDao {
             cq.orderBy(cb.desc(root.get(filter.getSortColumnName())));
         }
         Query<Candidate> query = session.createQuery(cq);
-        //query.setFirstResult((filter.getPage()-1)*filter.getPagesize()+1);
         query.setFirstResult((filter.getPage()-1) * filter.getPagesize());
         query.setMaxResults(filter.getPagesize());
         logger.debug("CandidateDaoImpl.list() done");
@@ -87,41 +68,37 @@ public class CandidateDaoImpl implements CandidateDao {
 
     @Override
     @Transactional
-    public void update(Long id, Candidate candidate) {
+    public Long saveOrUpdate(Candidate candidate) {
         Session session = sessionFactory.getCurrentSession();
-        logger.debug("CandidateDaoImpl.update() - start!");
-        Candidate candidateForUpdate = session.get(Candidate.class,id);
-        logger.debug("CandidateDaoImpl.update() - get done!");
-        candidateForUpdate.setName(candidate.getName());
-        candidateForUpdate.setSurname(candidate.getSurname());
-        candidateForUpdate.setSalary(candidate.getSalary());
-        candidateForUpdate.setBirthday(candidate.getBirthday());
-        candidateForUpdate.setCandidateState(candidate.getCandidateState());
-        logger.debug("CandidateDaoImpl.update() - fields updated!");
-        candidateForUpdate.clearContactDetails();
-        logger.debug("CandidateDaoImpl.update() - collection cleared!");
-
-        /*Iterator<ContactDetails> iter = candidateForUpdate.getContactDetailsList().iterator();
-        while(iter.hasNext()){
-            candidateForUpdate.delContactDetails(iter.next());
+        Long id = candidate.getId();
+        Candidate candidateForUpdate;
+        List<ContactDetails> contactDetailsList = candidate.getContactDetailsList();
+        if (id == null) {
+            // add new
+            candidate.setContactDetailsList( new ArrayList<ContactDetails>());
+            session.save(candidate);
+            id = candidate.getId();
+            candidateForUpdate = session.get(Candidate.class, id);
+        } else {
+            //update old
+            candidateForUpdate = session.get(Candidate.class,id);
+            candidateForUpdate.setName(candidate.getName());
+            candidateForUpdate.setSurname(candidate.getSurname());
+            candidateForUpdate.setSalary(candidate.getSalary());
+            candidateForUpdate.setBirthday(candidate.getBirthday());
+            candidateForUpdate.setCandidateState(candidate.getCandidateState());
+            for ( ContactDetails contactDetailsOne : candidateForUpdate.getContactDetailsList() ) {
+                contactDetailsOne.setCandidate(null);   // remove reference to candidate
+                session.delete(contactDetailsOne);     // deletes child from List
+            }
+            candidateForUpdate.getContactDetailsList().clear();  //
         }
-        logger.debug("CandidateDaoImpl.update() - collection removed!");*/
-        /*List<ContactDetails> oldContactDetails = candidateForUpdate.getContactDetailsList();
-        for ( ContactDetails contactDetailsOne : oldContactDetails) {
-            candidateForUpdate.delContactDetails(contactDetailsOne);
-        }*/
-        //candidateForUpdate.setContactDetailsList( new ArrayList<>());
-        Iterator<ContactDetails> iter2 = candidate.getContactDetailsList().iterator();
-        while(iter2.hasNext()){
-            candidateForUpdate.addContactDetails(iter2.next());
+        for ( ContactDetails contactDetailsOne : contactDetailsList) {
+            contactDetailsOne.setCandidate(candidateForUpdate); // add reference to candidate
+            candidateForUpdate.getContactDetailsList().add(contactDetailsOne);
         }
-        /*for ( ContactDetails contactDetailsOne : candidate.getContactDetailsList()) {
-            candidateForUpdate.addContactDetails(contactDetailsOne);
-        }*/
-        logger.debug("CandidateDaoImpl.update() - collection added!");
-        Candidate candidateMerged =  (Candidate)session.merge(candidateForUpdate);
-        logger.debug("Merged: " + candidateMerged.toString());
         session.flush();
+        return id;
     }
 
     @Override
@@ -130,7 +107,6 @@ public class CandidateDaoImpl implements CandidateDao {
         Session session = sessionFactory.getCurrentSession();
         Candidate delObj = session.byId(Candidate.class).load(id);
         session.delete(delObj);
-        logger.debug("Deleted: " + id.toString());
         session.flush();
     }
 

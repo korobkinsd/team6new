@@ -102,7 +102,7 @@ public class CandidateControllerTest {
         CandidateDao candidateDao = mock(CandidateDao.class);
         Candidate testCandidate = generateCandidate();
 
-        when(candidateDao.save( any(Candidate.class) ))
+        when(candidateDao.saveOrUpdate( any(Candidate.class) ))
                 .thenReturn(testCandidate.getId());
         controller.setCandidateDao(candidateDao);
         CandidateDto candidateDto = controller.save( modelMapper.map(testCandidate, CandidateDto.class)).getBody();

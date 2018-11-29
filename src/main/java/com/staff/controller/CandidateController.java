@@ -32,7 +32,7 @@ public class CandidateController {
 
     @PostMapping(value = "/candidate", consumes="application/json;charset=UTF-8" )
     public ResponseEntity<CandidateDto> save(@RequestBody CandidateDto candidateDto)  throws ParseException {
-        Long id = candidateDao.save( convertToEntity(candidateDto) );
+        Long id = candidateDao.saveOrUpdate( convertToEntity(candidateDto) );
         Candidate candidate = candidateDao.get(id);
         if(candidate == null){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
@@ -89,7 +89,9 @@ public class CandidateController {
         if(candidate == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } else {
-            candidateDao.update(id, convertToEntity(candidateDto));
+            candidateDto.setId(id);
+            //candidateDao.update(id, convertToEntity(candidateDto));
+            candidateDao.saveOrUpdate(convertToEntity(candidateDto));
             candidate = candidateDao.get(id);
             return ResponseEntity.ok().body(convertToDto(candidate));
         }

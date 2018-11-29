@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
+//@Embeddable
 @Table (name = "CONTACT_DETAILS", schema = "team6")
 public class ContactDetails {
 
@@ -43,6 +44,8 @@ public class ContactDetails {
     @JsonIgnore
     private Long id;
 
+    //@Id
+    //@GeneratedValue(strategy = GenerationType.TABLE)
     @NotNull(message="is required")
     @Size(min=3, max=1000, message="name must be between 3 and 1000 characters long")
     @Column(name="CONTACT_DETAILS", nullable = false, length = 1000)
