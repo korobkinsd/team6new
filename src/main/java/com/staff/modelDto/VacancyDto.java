@@ -1,7 +1,11 @@
 package com.staff.modelDto;
 
+import com.staff.model.Candidate;
+import com.staff.model.Requirement;
 import com.staff.model.User;
 import com.staff.model.Vacancy;
+
+import java.util.List;
 
 public class VacancyDto {
     private Long id;
@@ -12,6 +16,9 @@ public class VacancyDto {
     private double experienceYearsRequire;
     private String state;
     private User developer;
+    private List<Requirement> requirementList;
+    private List<Candidate> candidateList;
+
 
     public Long getId() {
         return id;
@@ -97,6 +104,25 @@ public class VacancyDto {
         this.experienceYearsRequire = vacancy.getExperienceYearsRequire();
         this.state = vacancy.getState();
         this.developer = vacancy.getDeveloper();
-     this.developer.setVacancies(null);
+        this.developer.setVacancies(null);
+        this.requirementList=vacancy.getRequirementList();
+        this.candidateList=vacancy.getCandidateList();
+
+    }
+
+    public List<Requirement> getRequirementList() {
+        return requirementList;
+    }
+
+    public void setRequirementList(List<Requirement> requirementList) {
+        this.requirementList = requirementList;
+    }
+
+    public List<Candidate> getCandidateList() {
+        return candidateList;
+    }
+
+    public void setCandidateList(List<Candidate> candidateList) {
+        this.candidateList = candidateList;
     }
 }

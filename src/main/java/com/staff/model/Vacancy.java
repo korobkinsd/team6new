@@ -42,6 +42,47 @@ public class Vacancy  {
     @JoinColumn(name = "DEVELOPER_ID")
     private User developer;
 
+    @ManyToMany(fetch = FetchType.EAGER/*LAZY,
+            cascade=CascadeType.ALL*/)
+    @JsonIgnore
+    @JoinTable(name = "vacancy_requirement",
+            joinColumns = { @JoinColumn(name = "VACANCY_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "REQUIREMENT") })
+    private List<Requirement> requirementList;
+
+    @ManyToMany(fetch = FetchType.LAZY/*LAZY,
+            cascade=CascadeType.ALL*/)
+    @OrderColumn
+    @JsonIgnore
+    @JoinTable(name = "vacancy_candidates",
+            joinColumns = { @JoinColumn(name = "VACANCY_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "CANDIDATE_ID") })
+    private List<Candidate> candidateList;
+
+    public void setDeveloper(User developer) {
+        this.developer = developer;
+    }
+
+    public List<Candidate> getCandidateList() {
+        return candidateList;
+    }
+
+    public void setCandidateList(List<Candidate> candidateList) {
+        this.candidateList = candidateList;
+    }
+
+
+
+     public List<Requirement> getRequirementList() {
+        return requirementList;
+    }
+
+    public void setRequirementList(List<Requirement> requirementList) {
+        this.requirementList = requirementList;
+    }
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,10 +100,6 @@ public class Vacancy  {
 
     public User getDeveloper() {
         return this.developer;
-    }
-
-    public void setUser(User developer) {
-        this.developer = developer;
     }
 
 

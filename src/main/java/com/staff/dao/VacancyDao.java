@@ -1,19 +1,21 @@
 package com.staff.dao;
 
 import com.staff.model.Vacancy;
+import com.staff.modelDto.VacancyChangeDto;
+import com.staff.modelDto.VacancyDto;
 import com.staff.util.filtering.SortPagining;
 
 import java.util.List;
 
 public interface VacancyDao {
 
-   long save(Vacancy vacancy);
+   long save(VacancyChangeDto vacancy);
 
-   Vacancy get(long id);
+   VacancyDto get(long id);
 
-   List<Vacancy> list(SortPagining sortPagining);
+   List<VacancyDto> list(SortPagining sortPagining);
 
-   void update(long id, Vacancy vacancy);
+   void update(long id, VacancyChangeDto vacancy);
 
    void delete(long id);
 

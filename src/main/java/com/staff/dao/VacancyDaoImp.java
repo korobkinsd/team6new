@@ -1,7 +1,11 @@
 package com.staff.dao;
 
 import com.staff.metamodel.Vacancy_;
+import com.staff.model.Requirement;
+import com.staff.model.User;
 import com.staff.model.Vacancy;
+import com.staff.modelDto.VacancyChangeDto;
+import com.staff.modelDto.VacancyDto;
 import com.staff.util.filtering.SortPagining;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,24 +28,44 @@ public class VacancyDaoImp implements VacancyDao {
    private SessionFactory sessionFactory;
 
    @Override
-   public long save(Vacancy vacancy) {
-      sessionFactory.getCurrentSession().save(vacancy);
+   public long save(VacancyChangeDto vacancyChangeDto) {
+       Session session = sessionFactory.getCurrentSession();
+
+       Vacancy vacancy = new Vacancy();
+       vacancy.setDeveloper(session.byId(User.class).load(vacancyChangeDto.getDeveloper_id()));
+       vacancy.setPosition(vacancyChangeDto.getPosition());
+       vacancy.setSalaryFrom(vacancyChangeDto.getSalaryFrom());
+       vacancy.setSalaryTo(vacancyChangeDto.getSalaryTo());
+       vacancy.setExperienceYearsRequire(vacancyChangeDto.getExperienceYearsRequire());
+       vacancy.setState(vacancyChangeDto.getState());
+
+      session.save(vacancy);
       return vacancy.getId();
    }
 
    @Override
-   public Vacancy get(long id) {
-      return sessionFactory.getCurrentSession().get(Vacancy.class, id);
+   public VacancyDto get(long id)
+   {
+       Session session = sessionFactory.getCurrentSession();
+
+       Vacancy vacancy=session.get(Vacancy.class, id);
+       VacancyDto vacancyDto =new VacancyDto(vacancy);
+      if (vacancyDto.getCandidateList().size()>1){
+          id=2;
+      }
+       return  vacancyDto;
    }
 
    @Override
-   public List<Vacancy> list( SortPagining sortPagining) {
+   public List<VacancyDto> list( SortPagining sortPagining) {
 
       Session session = sessionFactory.getCurrentSession();
+
       CriteriaBuilder cb = session.getCriteriaBuilder();
       CriteriaQuery<Vacancy> cq = cb.createQuery(Vacancy.class);
       Root<Vacancy> root = cq.from(Vacancy.class);
       cq.select(root);
+
 if (sortPagining.vacancy!=null) {
     List<Predicate> predicates = new ArrayList<>();
     if (sortPagining.vacancy.getId() != null & sortPagining.vacancy.getId() != 0) {
@@ -86,15 +110,34 @@ if (sortPagining.vacancy!=null) {
        query.setMaxResults(sortPagining.getPagesize());
 
 
+       List<Vacancy>  vacancyList= query.getResultList();
+       List<VacancyDto> vacancyDtoList = new ArrayList<VacancyDto>();
 
-      return query.getResultList();
+
+       for (Vacancy vacancy: vacancyList){
+           VacancyDto vacancyDto =new VacancyDto(vacancy);
+           if (vacancyDto.getCandidateList().size()>1){
+               sortPagining.page=1;
+           }
+           vacancyDtoList.add(vacancyDto);
+       }
+
+      return vacancyDtoList;
    }
 
    @Override
-   public void update(long id, Vacancy vacancy) {
-      Session session = sessionFactory.getCurrentSession();
-      session.update(vacancy);
-      session.flush();
+   public void update(long id, VacancyChangeDto vacancy) {
+     Session session = sessionFactory.getCurrentSession();
+     Vacancy vacancyold =  session.byId(Vacancy.class).load(vacancy.getId());
+       vacancyold.setDeveloper(session.byId(User.class).load(vacancy.getDeveloper_id()));
+       vacancyold.setPosition(vacancy.getPosition());
+       vacancyold.setSalaryFrom(vacancy.getSalaryFrom());
+       vacancyold.setSalaryTo(vacancy.getSalaryTo());
+       vacancyold.setExperienceYearsRequire(vacancy.getExperienceYearsRequire());
+       vacancyold.setState(vacancy.getState());
+
+     session.update(vacancyold);
+     session.flush();
    }
 
    @Override
@@ -103,5 +146,22 @@ if (sortPagining.vacancy!=null) {
       Vacancy vacancy = session.byId(Vacancy.class).load(id);
       session.delete(vacancy);
    }
+
+   public void addRequirement (long id,List<String>  requirements)
+    {
+
+        Session session = sessionFactory.getCurrentSession();
+        Vacancy vacancyOld =  session.byId(Vacancy.class).load(id);
+        List<Requirement> requirementList =vacancyOld.getRequirementList();
+        for (String requirementName: requirements) {
+            Requirement requirement = new Requirement();
+            requirement.setName(requirementName);
+            session.save(requirement);
+            requirementList.add(requirement);
+        }
+        vacancyOld.setRequirementList(requirementList);
+        session.update(vacancyOld);
+        session.flush();
+    }
 
 }

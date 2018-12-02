@@ -18,7 +18,14 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "CANDIDATE", schema = "team6")
-public class Candidate {   // implements Serializable
+public class Candidate {
+    public List<Vacancy> getVacancyList() {
+        return vacancyList;
+    }
+
+    public void setVacancyList(List<Vacancy> vacancyList) {
+        this.vacancyList = vacancyList;
+    }   // implements Serializable
 
     public enum CandidateState {
             ARCHIVE( "В архиве" )
@@ -63,6 +70,12 @@ public class Candidate {   // implements Serializable
     //@JsonBackReference
     @JsonManagedReference
     private List<ContactDetails> contactDetailsList;
+
+    @ManyToMany(  mappedBy = "candidateList" )   //,  ,
+    //@JoinColumn(name = "ID", referencedColumnName = "CANDIDATE_ID")   // , updatable = true, insertable = true
+    //@JsonBackReference
+    @JsonIgnore
+    private List<Vacancy> vacancyList;
 
     @Past
     @Temporal(value = TemporalType.DATE)

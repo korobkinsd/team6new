@@ -3,6 +3,7 @@ package com.staff.controller;
 import com.staff.dao.VacancyDao;
 import com.staff.model.Vacancy;
 
+import com.staff.modelDto.VacancyChangeDto;
 import com.staff.modelDto.VacancyDto;
 import com.staff.util.filtering.SortPagining;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,15 @@ public class VacancyController {
 
    /*---Add new vacancy---*/
    @PutMapping ("/vacancy")
-   public ResponseEntity<?> save(@RequestBody Vacancy vacancy) {
-      long id = vacancyDao.save(vacancy);
+   public ResponseEntity<?> save(@RequestBody VacancyChangeDto vacancydto) {
+       long id = vacancyDao.save(vacancydto);
       return ResponseEntity.ok().body("New Vacancy has been saved with ID:" + id);
    }
 
    /*---Get a vacancy by id---*/
    @GetMapping("/vacancy/{id}")
-   public ResponseEntity<Vacancy> get(@PathVariable("id") long id) {
-      Vacancy vacancy = vacancyDao.get(id);
+   public ResponseEntity<VacancyDto> get(@PathVariable("id") long id) {
+       VacancyDto vacancy = vacancyDao.get(id);
       return ResponseEntity.ok().body(vacancy);
    }
 
@@ -59,15 +60,14 @@ public class VacancyController {
        vacancyFilter.setState(state);
        vacancyFilter.setExperienceYearsRequire(experienceyearsrequire);
        SortPagining sortPagining = new SortPagining( vacancyFilter ,columnName,order,pageNumber,pageSize);
-       List<Vacancy> vacancys = vacancyDao.list(sortPagining);
+       //List<Vacancy> vacancys = vacancyDao.list(sortPagining);
+       List<VacancyDto> vacancyDtoList = vacancyDao.list(sortPagining);
 
-       List<VacancyDto> vacancyDtoList = new ArrayList<VacancyDto>();
 
-
-           for (Vacancy vacancy: vacancys){
+         /*  for (Vacancy vacancy: vacancys){
                VacancyDto vacancyDto =new VacancyDto(vacancy);
                vacancyDtoList.add(vacancyDto);
-           }
+           }*/
 
 return vacancyDtoList;
 
@@ -76,7 +76,7 @@ return vacancyDtoList;
 
    /*---Update a vacancy by id---*/
    @PostMapping ("/vacancy/{id}")
-   public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Vacancy vacancy) {
+   public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody VacancyChangeDto vacancy) {
       vacancyDao.update(id, vacancy);
       return ResponseEntity.ok().body("Vacancy has been updated successfully.");
    }
