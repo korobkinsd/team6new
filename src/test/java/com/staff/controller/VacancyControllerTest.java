@@ -5,7 +5,7 @@ import com.staff.metamodel.Vacancy_;
 import com.staff.model.Vacancy;
 import com.staff.modelDto.VacancyChangeDto;
 import com.staff.modelDto.VacancyDto;
-import com.staff.util.filtering.SortPagining;
+import com.staff.util.filtering.VacancyFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +34,23 @@ class VacancyControllerTest {
         Vacancy vacancy = new Vacancy();
         vacancy.setId((long)2035);
         vacancy.setPosition("Java");
-       // vacancy.setIdDeveloper((long)0);
+        // vacancy.setIdDeveloper((long)0);
+        vacancy.setSalaryFrom((double) 0);
+        vacancy.setSalaryTo((double)0);
+        vacancy.setExperienceYearsRequire((double)0);
+        return vacancy;
+    }
+    private VacancyDto generateVacancyDto() {
+        VacancyDto vacancy = new VacancyDto(generateVacancy());
+        return vacancy;
+    }
+
+    private VacancyChangeDto generateVacancyChangeDto() {
+
+        VacancyChangeDto vacancy = new VacancyChangeDto();
+        vacancy.setId((long)2035);
+        vacancy.setPosition("Java");
+         vacancy.setIdDeveloper((long)102);
         vacancy.setSalaryFrom((double) 0);
         vacancy.setSalaryTo((double)0);
         vacancy.setExperienceYearsRequire((double)0);
@@ -53,17 +69,17 @@ class VacancyControllerTest {
     @Test
     void list() {
         VacancyDao vacancyDao=mock(VacancyDao.class);
-        Vacancy vacancy = generateVacancy();
+        VacancyDto vacancy = generateVacancyDto();
         Vacancy vacancyempty = generateVacancy();
         controller.vacancyDao = vacancyDao;
-        List<Vacancy> listVacancies = new ArrayList<Vacancy>();
+        List<VacancyDto> listVacancies = new ArrayList<VacancyDto>();
         listVacancies.add(vacancy);
-     //   when(vacancyDao.list(any(SortPagining.class))).thenReturn(listVacancies);
+        when(vacancyDao.list(any(VacancyFilter.class))).thenReturn(listVacancies);
 
-      /*  ResponseEntity<List<Vacancy>> vacancys = controller.list(vacancyempty.getId(),vacancyempty.getPosition(),vacancyempty.getSalaryFrom(),vacancyempty.getSalaryTo(),vacancyempty.getIdDeveloper(),vacancyempty.getState(),vacancyempty.getExperienceYearsRequire(),1,10, Vacancy_.ID,"ASC");
-        assertEquals(vacancys.getBody().size(), 1);
-        assertEquals(vacancys.getBody().get(0), vacancy);
-*/
+        List<VacancyDto> vacancys = controller.list(vacancyempty.getId(),vacancyempty.getPosition(),vacancyempty.getSalaryFrom(),vacancyempty.getSalaryTo(),(long)102,vacancyempty.getState(),vacancyempty.getExperienceYearsRequire(),1,10, Vacancy_.ID,"ASC");
+        assertEquals(vacancys.size(), 1);
+        assertEquals(vacancys.get(0), vacancy);
+
 
     }
 
@@ -71,12 +87,12 @@ class VacancyControllerTest {
     @Test
     void save() {
         VacancyDao vacancyDao = mock(VacancyDao.class);
-       // Vacancy vacancy = generateVacancy();
-       // vacancyDao.save(any(VacancyChangeDto.class));
+        VacancyChangeDto vacancy = generateVacancyChangeDto();
+       vacancyDao.save(any(VacancyChangeDto.class));
 
-      //  controller.setVacancyDao(vacancyDao);
+      controller.setVacancyDao(vacancyDao);
 
-     //   controller.save(vacancy);
+       controller.save(vacancy);
 
         assertEquals("", "");
     }
@@ -84,12 +100,12 @@ class VacancyControllerTest {
     @Test
     void update() {
         VacancyDao vacancyDao = mock(VacancyDao.class);
-        Vacancy vacancy = generateVacancy();
-      //  vacancyDao.update(anyLong(), any(Vacancy.class));
+        VacancyChangeDto vacancy = generateVacancyChangeDto();
+        vacancyDao.update(anyLong(), any(VacancyChangeDto.class));
 
         controller.setVacancyDao(vacancyDao);
 
-       // controller.update((long) 101, vacancy);
+        controller.update((long) 101, vacancy);
 
         assertEquals("", "");
     }

@@ -104,7 +104,9 @@ public class VacancyDto {
         this.experienceYearsRequire = vacancy.getExperienceYearsRequire();
         this.state = vacancy.getState();
         this.developer = vacancy.getDeveloper();
-        this.developer.setVacancies(null);
+        if  (this.developer!=null){
+            this.developer.setVacancies(null);
+        }
         this.requirementList=vacancy.getRequirementList();
         this.candidateList=vacancy.getCandidateList();
 

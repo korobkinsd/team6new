@@ -1,9 +1,8 @@
 package com.staff.dao;
 
-import com.staff.model.Vacancy;
 import com.staff.modelDto.VacancyChangeDto;
 import com.staff.modelDto.VacancyDto;
-import com.staff.util.filtering.SortPagining;
+import com.staff.util.filtering.VacancyFilter;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public interface VacancyDao {
 
    VacancyDto get(long id);
 
-   List<VacancyDto> list(SortPagining sortPagining);
+   List<VacancyDto> list(VacancyFilter vacancyFilter);
 
    void update(long id, VacancyChangeDto vacancy);
 

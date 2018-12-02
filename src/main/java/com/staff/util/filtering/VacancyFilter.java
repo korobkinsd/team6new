@@ -2,7 +2,7 @@ package com.staff.util.filtering;
 
 import com.staff.model.Vacancy;
 
-public class SortPagining {
+public class VacancyFilter {
     public Vacancy vacancy;
     public String sortColumnName;
     public String order;
@@ -42,14 +42,14 @@ public class SortPagining {
         this.pagesize = pagesize;
     }
 
-    public SortPagining(Vacancy vacancy, String sortColumnName, String order, Integer page, Integer pagesize) {
+    public VacancyFilter(Vacancy vacancy, String sortColumnName, String order, Integer page, Integer pagesize) {
         this.vacancy=vacancy;
         this.sortColumnName = sortColumnName;
         this.order = order;
         this.page = page;
         this.pagesize = pagesize;
     }
-    public SortPagining() {
+    public VacancyFilter() {
 
     }
 }

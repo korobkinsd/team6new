@@ -6,7 +6,7 @@ import com.staff.model.User;
 import com.staff.model.Vacancy;
 import com.staff.modelDto.VacancyChangeDto;
 import com.staff.modelDto.VacancyDto;
-import com.staff.util.filtering.SortPagining;
+import com.staff.util.filtering.VacancyFilter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -57,7 +57,7 @@ public class VacancyDaoImp implements VacancyDao {
    }
 
    @Override
-   public List<VacancyDto> list( SortPagining sortPagining) {
+   public List<VacancyDto> list( VacancyFilter vacancyFilter) {
 
       Session session = sessionFactory.getCurrentSession();
       CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -65,31 +65,28 @@ public class VacancyDaoImp implements VacancyDao {
       Root<Vacancy> root = cq.from(Vacancy.class);
       cq.select(root);
 
-if (sortPagining.vacancy!=null) {
+if (vacancyFilter.vacancy!=null) {
     List<Predicate> predicates = new ArrayList<>();
-    if (sortPagining.vacancy.getId() != null ) {
-            predicates.add(cb.equal(root.get(Vacancy_.ID), sortPagining.vacancy.getId()));
+    if (vacancyFilter.vacancy.getId() != null ) {
+            predicates.add(cb.equal(root.get(Vacancy_.ID), vacancyFilter.vacancy.getId()));
 
     }
-  /*  if (sortPagining.vacancy.getIdDeveloper() != null & sortPagining.vacancy.getIdDeveloper() != 0) {
-            predicates.add(cb.equal(root.get(Vacancy_.ID_DEVELOPER), sortPagining.vacancy.getIdDeveloper()));
 
-    }*/
-    if (sortPagining.vacancy.getExperienceYearsRequire() != 0.0) {
-        predicates.add(cb.equal(root.get(Vacancy_.EXPERIENCE_YEARS_REQUIRE), sortPagining.vacancy.getExperienceYearsRequire()));
+    if (vacancyFilter.vacancy.getExperienceYearsRequire() != 0.0) {
+        predicates.add(cb.equal(root.get(Vacancy_.EXPERIENCE_YEARS_REQUIRE), vacancyFilter.vacancy.getExperienceYearsRequire()));
     }
-    if (sortPagining.vacancy.getSalaryFrom() != 0.0) {
-        predicates.add(cb.equal(root.get(Vacancy_.SALARY_FROM), sortPagining.vacancy.getSalaryFrom()));
+    if (vacancyFilter.vacancy.getSalaryFrom() != 0.0) {
+        predicates.add(cb.equal(root.get(Vacancy_.SALARY_FROM), vacancyFilter.vacancy.getSalaryFrom()));
     }
-    if (sortPagining.vacancy.getSalaryTo() != 0.0) {
-        predicates.add(cb.equal(root.get(Vacancy_.SALARY_TO), sortPagining.vacancy.getSalaryTo()));
+    if (vacancyFilter.vacancy.getSalaryTo() != 0.0) {
+        predicates.add(cb.equal(root.get(Vacancy_.SALARY_TO), vacancyFilter.vacancy.getSalaryTo()));
     }
-    if (!sortPagining.vacancy.getPosition().equals("") & sortPagining.vacancy.getPosition() != null) {
+    if (!vacancyFilter.vacancy.getPosition().equals("") & vacancyFilter.vacancy.getPosition() != null) {
         predicates.add(cb.like(
-                cb.lower(root.<String>get(Vacancy_.POSITION)), "%" + sortPagining.vacancy.getPosition().toLowerCase() + "%"));
+                cb.lower(root.<String>get(Vacancy_.POSITION)), "%" + vacancyFilter.vacancy.getPosition().toLowerCase() + "%"));
     }
-    if (!sortPagining.vacancy.getState().equals("") & sortPagining.vacancy.getState() != null) {
-        predicates.add(cb.equal(root.get(Vacancy_.STATE), sortPagining.vacancy.getState()));
+    if (!vacancyFilter.vacancy.getState().equals("") & vacancyFilter.vacancy.getState() != null) {
+        predicates.add(cb.equal(root.get(Vacancy_.STATE), vacancyFilter.vacancy.getState()));
     }
 
     cq.where(
@@ -98,25 +95,22 @@ if (sortPagining.vacancy!=null) {
 
             ));
 
-    if (sortPagining.order.toUpperCase().equals("ASC")){
-        cq.orderBy(cb.asc(root.get(sortPagining.getSortColumnName())));
+    if (vacancyFilter.order.toUpperCase().equals("ASC")){
+        cq.orderBy(cb.asc(root.get(vacancyFilter.getSortColumnName())));
     }else{
-        cq.orderBy(cb.desc(root.get(sortPagining.getSortColumnName())));
+        cq.orderBy(cb.desc(root.get(vacancyFilter.getSortColumnName())));
     }
 }
       Query<Vacancy> query = session.createQuery(cq);
-       query.setFirstResult((sortPagining.getPage()-1) * sortPagining.getPagesize());
-       query.setMaxResults(sortPagining.getPagesize());
-
-
+       query.setFirstResult((vacancyFilter.getPage()-1) * vacancyFilter.getPagesize());
+       query.setMaxResults(vacancyFilter.getPagesize());
        List<Vacancy>  vacancyList= query.getResultList();
        List<VacancyDto> vacancyDtoList = new ArrayList<VacancyDto>();
-
 
        for (Vacancy vacancy: vacancyList){
            VacancyDto vacancyDto =new VacancyDto(vacancy);
            if (vacancyDto.getCandidateList().size()>1){
-               sortPagining.page=1;
+               vacancyFilter.page=1;
            }
            vacancyDtoList.add(vacancyDto);
        }
