@@ -60,6 +60,7 @@ public class VacancyDaoImp implements VacancyDao {
    public List<VacancyDto> list( SortPagining sortPagining) {
 
       Session session = sessionFactory.getCurrentSession();
+
       CriteriaBuilder cb = session.getCriteriaBuilder();
       CriteriaQuery<Vacancy> cq = cb.createQuery(Vacancy.class);
       Root<Vacancy> root = cq.from(Vacancy.class);
@@ -67,7 +68,7 @@ public class VacancyDaoImp implements VacancyDao {
 
 if (sortPagining.vacancy!=null) {
     List<Predicate> predicates = new ArrayList<>();
-    if (sortPagining.vacancy.getId() != null ) {
+    if (sortPagining.vacancy.getId() != null & sortPagining.vacancy.getId() != 0) {
             predicates.add(cb.equal(root.get(Vacancy_.ID), sortPagining.vacancy.getId()));
 
     }
