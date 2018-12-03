@@ -18,11 +18,11 @@ public class Vacancy_ {
 
     public static final String ID = "id";
     public static final String POSITION = "position";
-    public static final String EXPERIENCE_YEARS_REQUIRE = "experienceYearsRequire";
-    public static final String STATE = "state";
-    public static final String SALARY_FROM = "salaryFrom";
-    public static final String SALARY_TO = "salaryTo";
-    public static final String ID_DEVELOPER = "idDeveloper";
+    public static final String EXPERIENCE_YEARS_REQUIRE = "experience_Years_Require";
+    public static final String STATE = "vacancy_state";
+    public static final String SALARY_FROM = "salary_From";
+    public static final String SALARY_TO = "salary_To";
+    public static final String ID_DEVELOPER = "developer_id";
 }
 
 

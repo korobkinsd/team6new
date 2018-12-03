@@ -1,11 +1,5 @@
 package com.staff.modelDto;
 
-import com.staff.model.Candidate;
-import com.staff.model.Requirement;
-import com.staff.model.User;
-
-import java.util.List;
-
 public class VacancyChangeDto {
     private Long id;
     private Long developer_id;

@@ -5,12 +5,11 @@ import com.staff.model.Vacancy;
 
 import com.staff.modelDto.VacancyChangeDto;
 import com.staff.modelDto.VacancyDto;
-import com.staff.util.filtering.SortPagining;
+import com.staff.util.filtering.VacancyFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 @RestController
 public class VacancyController {
@@ -59,7 +58,7 @@ public class VacancyController {
        vacancyFilter.setSalaryTo(salaryto);
        vacancyFilter.setState(state);
        vacancyFilter.setExperienceYearsRequire(experienceyearsrequire);
-       SortPagining sortPagining = new SortPagining( vacancyFilter ,columnName,order,pageNumber,pageSize);
+       VacancyFilter sortPagining = new VacancyFilter( vacancyFilter ,columnName,order,pageNumber,pageSize);
        //List<Vacancy> vacancys = vacancyDao.list(sortPagining);
        List<VacancyDto> vacancyDtoList = vacancyDao.list(sortPagining);
 
@@ -77,7 +76,7 @@ return vacancyDtoList;
    /*---Update a vacancy by id---*/
    @PostMapping ("/vacancy/{id}")
    public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody VacancyChangeDto vacancy) {
-      vacancyDao.update(id, vacancy);
+      vacancyDao.update(vacancy);
       return ResponseEntity.ok().body("Vacancy has been updated successfully.");
    }
 
