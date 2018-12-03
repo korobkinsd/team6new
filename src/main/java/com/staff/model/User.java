@@ -75,7 +75,7 @@ public class User {
         this.surname = surname;
     }
 
-    @Column(name = "userState")
+    @Column(name = "user_State")
     public String getUserState() {
         return userState;
     }

@@ -22,7 +22,7 @@ public class Vacancy_ {
     public static final String STATE = "vacancy_state";
     public static final String SALARY_FROM = "salary_From";
     public static final String SALARY_TO = "salary_To";
-    public static final String ID_DEVELOPER = "developer_id";
+    public static final String ID_DEVELOPER = "Developer_id";
 }
 
 

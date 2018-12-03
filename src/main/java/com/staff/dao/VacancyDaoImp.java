@@ -6,7 +6,7 @@ import com.staff.model.User;
 import com.staff.model.Vacancy;
 import com.staff.modelDto.VacancyChangeDto;
 import com.staff.modelDto.VacancyDto;
-import com.staff.util.filtering.SortPagining;
+import com.staff.util.filtering.VacancyFilter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -57,7 +57,7 @@ public class VacancyDaoImp implements VacancyDao {
    }
 
    @Override
-   public List<VacancyDto> list( SortPagining sortPagining) {
+   public List<VacancyDto> list( VacancyFilter sortPagining) {
 
       Session session = sessionFactory.getCurrentSession();
 
@@ -68,7 +68,7 @@ public class VacancyDaoImp implements VacancyDao {
 
 if (sortPagining.vacancy!=null) {
     List<Predicate> predicates = new ArrayList<>();
-    if (sortPagining.vacancy.getId() != null & sortPagining.vacancy.getId() != 0) {
+    if (sortPagining.vacancy.getId() != null ) {
             predicates.add(cb.equal(root.get(Vacancy_.ID), sortPagining.vacancy.getId()));
 
     }
@@ -126,7 +126,7 @@ if (sortPagining.vacancy!=null) {
    }
 
    @Override
-   public void update(long id, VacancyChangeDto vacancy) {
+   public void update( VacancyChangeDto vacancy) {
      Session session = sessionFactory.getCurrentSession();
      Vacancy vacancyold =  session.byId(Vacancy.class).load(vacancy.getId());
        vacancyold.setDeveloper(session.byId(User.class).load(vacancy.getDeveloper_id()));

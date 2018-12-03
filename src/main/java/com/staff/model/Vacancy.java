@@ -52,7 +52,7 @@ public class Vacancy  {
 
     @ManyToMany(fetch = FetchType.LAZY/*LAZY,
             cascade=CascadeType.ALL*/)
-    @OrderColumn
+   // @OrderColumn
     @JsonIgnore
     @JoinTable(name = "vacancy_candidates",
             joinColumns = { @JoinColumn(name = "VACANCY_ID") },

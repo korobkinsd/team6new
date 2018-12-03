@@ -19,5 +19,5 @@ public class User_ {
     public static final String SURNAME = "surname";
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
-    public static final String USER_STATE = "userState";
+    public static final String USER_STATE = "user_State";
 }

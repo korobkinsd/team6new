@@ -6,7 +6,6 @@ import com.staff.model.Role;
 import com.staff.model.User;
 import com.staff.modelDto.UserDto;
 import com.staff.util.filtering.UserUtil;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -77,6 +76,7 @@ public class UserController {
         userDto.email = user.getEmail();
         userDto.surname = user.getSurname();
         userDto.userState = user.getUserState();
+        //userDto.vacancies=user.getVacancies();
         List<Role> roles = user.getRoles();
         if (roles != null && roles.size() > 0){
             userDto.roles = (List)new ArrayList<Role>();
