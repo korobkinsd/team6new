@@ -14,7 +14,7 @@ public interface VacancyDao {
 
    List<VacancyDto> list(VacancyFilter vacancyFilter);
 
-   void update(long id, VacancyChangeDto vacancy);
+   void update(VacancyChangeDto vacancy);
 
    void delete(long id);
 

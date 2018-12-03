@@ -105,7 +105,7 @@ if (vacancyFilter.vacancy!=null) {
        query.setFirstResult((vacancyFilter.getPage()-1) * vacancyFilter.getPagesize());
        query.setMaxResults(vacancyFilter.getPagesize());
        List<Vacancy>  vacancyList= query.getResultList();
-       List<VacancyDto> vacancyDtoList = new ArrayList<VacancyDto>();
+       List<VacancyDto> vacancyDtoList = new ArrayList<>();
 
        for (Vacancy vacancy: vacancyList){
            VacancyDto vacancyDto =new VacancyDto(vacancy);
@@ -119,7 +119,7 @@ if (vacancyFilter.vacancy!=null) {
    }
 
    @Override
-   public void update(long id, VacancyChangeDto vacancy) {
+   public void update(VacancyChangeDto vacancy) {
      Session session = sessionFactory.getCurrentSession();
      Vacancy vacancyold =  session.byId(Vacancy.class).load(vacancy.getId());
        vacancyold.setDeveloper(session.byId(User.class).load(vacancy.getDeveloper_id()));

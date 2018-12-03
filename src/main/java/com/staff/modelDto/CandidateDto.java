@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 //import com.staff.model.Candidate;
 import com.staff.model.ContactDetails;
-import com.staff.model.Vacancy;
 
 //import java.text.ParseException;
 //import java.text.SimpleDateFormat;

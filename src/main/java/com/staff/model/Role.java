@@ -1,7 +1,6 @@
 package com.staff.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "role", schema = "team6")

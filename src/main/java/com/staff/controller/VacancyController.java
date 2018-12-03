@@ -76,7 +76,7 @@ return vacancyDtoList;
    /*---Update a vacancy by id---*/
    @PostMapping ("/vacancy/{id}")
    public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody VacancyChangeDto vacancy) {
-      vacancyDao.update(id, vacancy);
+      vacancyDao.update(vacancy);
       return ResponseEntity.ok().body("Vacancy has been updated successfully.");
    }
 

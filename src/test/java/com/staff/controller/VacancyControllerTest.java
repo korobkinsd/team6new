@@ -8,7 +8,6 @@ import com.staff.modelDto.VacancyDto;
 import com.staff.util.filtering.VacancyFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.ResponseEntity;
 
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ class VacancyControllerTest {
     private VacancyController controller;
     
     @BeforeEach
-    protected void setUp() {
+    void setUp() {
         controller = new VacancyController();
 
     }
@@ -72,7 +71,7 @@ class VacancyControllerTest {
         VacancyDto vacancy = generateVacancyDto();
         Vacancy vacancyempty = generateVacancy();
         controller.vacancyDao = vacancyDao;
-        List<VacancyDto> listVacancies = new ArrayList<VacancyDto>();
+        List<VacancyDto> listVacancies = new ArrayList<>();
         listVacancies.add(vacancy);
         when(vacancyDao.list(any(VacancyFilter.class))).thenReturn(listVacancies);
 
@@ -101,7 +100,7 @@ class VacancyControllerTest {
     void update() {
         VacancyDao vacancyDao = mock(VacancyDao.class);
         VacancyChangeDto vacancy = generateVacancyChangeDto();
-        vacancyDao.update(anyLong(), any(VacancyChangeDto.class));
+        vacancyDao.update(any(VacancyChangeDto.class));
 
         controller.setVacancyDao(vacancyDao);
 

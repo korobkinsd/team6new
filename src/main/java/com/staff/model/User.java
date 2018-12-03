@@ -1,7 +1,8 @@
 package com.staff.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -112,8 +113,8 @@ public class User {
         return Objects.hash(id, email, password, name, surname);
     }
 
-    @ManyToMany(fetch = FetchType.EAGER/*LAZY,
-            cascade=CascadeType.ALL*/)
+    @ManyToMany()
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "user_roles",
             joinColumns = { @JoinColumn(name = "USER_ID") },
             inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
