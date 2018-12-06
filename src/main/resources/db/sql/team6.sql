@@ -228,10 +228,12 @@ alter table CANDIDATE_RESPONSIBILITY add constraint candidateResponsibilityFK_ca
 
 alter table CANDIDATE_RESPONSIBILITY add constraint candidateResponsibilityFK_responsibility foreign key (RESPONSIBILITY) references `RESPONSIBILITY`(NAME) on delete cascade on update cascade;
 
+/*drop table ATTACHMENT;*/
+
 create table if not exists ATTACHMENT
 ( `CANDIDATE_ID` bigint not null
-, `FILE_PATH` varchar(1000)
-, `ATTACHMENT_TYPE` enum ('CV', 'Cover Letter','Photo') not null
+, `FILE_PATH` varchar(1000) not null
+, `ATTACHMENT_TYPE` enum ('CV', 'CL','PHOTO') not null
 );
 
 alter table ATTACHMENT add constraint attachmentFK_candidate foreign key (CANDIDATE_ID) references `CANDIDATE`(ID) on delete cascade on update cascade;

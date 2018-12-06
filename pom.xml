@@ -20,6 +20,9 @@
     <jackson.version>1.9.13</jackson.version>
     <jackson2.version>2.9.7</jackson2.version>
     <modelmapper.version>2.3.1</modelmapper.version>
+    <aws.version>1.11.163</aws.version>
+    <jersey.version>1.19.4</jersey.version>
+    <!-- jersey.version>1.8</jersey.version -->
   </properties>
 
   <dependencies>
@@ -197,6 +200,24 @@
       <groupId>org.modelmapper</groupId>
       <artifactId>modelmapper</artifactId>
       <version>${modelmapper.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk</artifactId>
+      <version>${aws.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.jersey.contribs</groupId>
+      <artifactId>jersey-multipart</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-server</artifactId>
+      <version>${jersey.version}</version>
     </dependency>
 
   </dependencies>

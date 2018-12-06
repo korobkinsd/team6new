@@ -6,6 +6,8 @@ import com.staff.model.Candidate_;
 import com.staff.model.ContactDetails;
 import com.staff.modelDto.CandidateDto;
 import com.staff.util.filtering.CandidateFilter;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataBodyPart;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -13,6 +15,8 @@ import org.modelmapper.ModelMapper;
 //import org.springframework.http.ResponseEntity;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CandidateControllerTest {
@@ -167,6 +172,19 @@ public class CandidateControllerTest {
         contactDetails.add(contactDetailsOne);
         candidate.setContactDetailsList(contactDetails);
         return candidate;
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    public void uploadFileTest() throws IOException {
+        CandidateDao candidateDao = mock(CandidateDao.class);
+        Candidate testCandidate = generateCandidate();
+        when(candidateDao.get( anyLong() )).thenReturn( testCandidate );
+        controller.setCandidateDao(candidateDao);
+        InputStream uploadedInputStream = mock(InputStream.class);
+        FormDataBodyPart content = mock(FormDataBodyPart.class);
+        //FormDataContentDisposition fileDetail = mock(FormDataContentDisposition.class);
+        controller.saveAttachment(1L, "CV", content, uploadedInputStream );
     }
 
 }

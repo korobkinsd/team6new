@@ -19,13 +19,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "CANDIDATE", schema = "team6")
 public class Candidate {
-    public List<Vacancy> getVacancyList() {
-        return vacancyList;
-    }
-
-    public void setVacancyList(List<Vacancy> vacancyList) {
-        this.vacancyList = vacancyList;
-    }   // implements Serializable
+   // implements Serializable
 
     public enum CandidateState {
             ARCHIVE( "В архиве" )
@@ -71,6 +65,10 @@ public class Candidate {
     @JsonManagedReference
     private List<ContactDetails> contactDetailsList;
 
+    @OneToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "candidate" )
+    @JsonManagedReference
+    private List<Attachment> attachmentList;
+
     @ManyToMany(  mappedBy = "candidateList" )   //,  ,
     //@JoinColumn(name = "ID", referencedColumnName = "CANDIDATE_ID")   // , updatable = true, insertable = true
     //@JsonBackReference
@@ -100,6 +98,15 @@ public class Candidate {
     public final void setContactDetailsList(List<ContactDetails> contactDetailsList) {
         this.contactDetailsList = contactDetailsList;
     }
+
+    public List<Attachment> getAttachmentList() {
+        return this.attachmentList;
+    };
+
+    public final void setAttachmentList(List<Attachment> attachmentList) {
+        this.attachmentList = attachmentList;
+    }
+
 
     public final Long getId() {
         return id;
@@ -179,6 +186,14 @@ public class Candidate {
         } else {
             return "";
         }
+    }
+
+    public List<Vacancy> getVacancyList() {
+        return vacancyList;
+    }
+
+    public void setVacancyList(List<Vacancy> vacancyList) {
+        this.vacancyList = vacancyList;
     }
 
     @Override
