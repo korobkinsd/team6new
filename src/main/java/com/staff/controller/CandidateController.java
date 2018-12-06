@@ -16,7 +16,6 @@ import com.staff.modelDto.CandidateDto;
 import com.staff.util.filtering.CandidateFilter;
 //import com.sun.jersey.core.header.ContentDisposition;
 import com.sun.jersey.core.header.ContentDisposition;
-import com.sun.jersey.core.header.FormDataContentDisposition;
 //import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
@@ -31,9 +30,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -230,7 +227,7 @@ public class CandidateController {
         Candidate candidate = candidateDao.get(candidateId);
         try {
             String textReturned = candidateDao.getAttachemnt(candidateId, Attachment.AttachmentType.valueOf(at));
-            if ((candidate == null) || (textReturned == null)) {
+            if (candidate == null || textReturned == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Candidate or File not Found!");
             } else {
                 return ResponseEntity.ok().body(textReturned);
