@@ -6,8 +6,6 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.staff.metamodel.Candidate_;
 import com.staff.model.Attachment;
@@ -22,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -129,7 +126,7 @@ public class CandidateDaoImpl implements CandidateDao {
         Session session = sessionFactory.getCurrentSession();
         Candidate candidate = session.get(Candidate.class, candidateId);
         List<Attachment> attachments = candidate.getAttachmentList();
-        File file = null;
+        //File file = null;
         for (Attachment attachment : attachments) {
             if (attachmentType.equals( attachment.getAttachmentType()) ) {
                 S3Object fileReturned = null;
@@ -140,7 +137,7 @@ public class CandidateDaoImpl implements CandidateDao {
                             .withCredentials(new ProfileCredentialsProvider())
                             .build();
                     fileReturned = s3Client.getObject(new GetObjectRequest(Attachment.BUCKET_NAME, attachment.getFilePath()));
-                    logger.debug(( "Content-Type: " + fileReturned.getObjectMetadata().getContentType()));
+                    logger.debug( "Content-Type: " + fileReturned.getObjectMetadata().getContentType());
                     InputStream input = fileReturned.getObjectContent();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(input));
                     String line = null;
