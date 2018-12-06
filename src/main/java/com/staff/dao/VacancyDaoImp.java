@@ -20,6 +20,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Transactional
 @Repository
 public class VacancyDaoImp implements VacancyDao {
@@ -50,9 +52,9 @@ public class VacancyDaoImp implements VacancyDao {
 
        Vacancy vacancy=session.get(Vacancy.class, id);
        VacancyDto vacancyDto =new VacancyDto(vacancy);
-      if (vacancyDto.getCandidateList().size()>1){
+     /* if (vacancyDto.getCandidateList().size()>1){
           id=2;
-      }
+      }*/
        return  vacancyDto;
    }
 
@@ -111,18 +113,19 @@ if (sortPagining.vacancy!=null) {
 
 
        List<Vacancy>  vacancyList= query.getResultList();
-       List<VacancyDto> vacancyDtoList = new ArrayList<VacancyDto>();
+       List<VacancyDto> vacancyDtoList = vacancyList.stream().map(vacancy ->new VacancyDto(vacancy)).collect(Collectors.toList());
 
 
-       for (Vacancy vacancy: vacancyList){
+      /* for (Vacancy vacancy: vacancyList){
            VacancyDto vacancyDto =new VacancyDto(vacancy);
-           if (vacancyDto.getCandidateList().size()>1){
+         /*  if (vacancyDto.getCandidateList().size()>1){
                sortPagining.page=1;
-           }
-           vacancyDtoList.add(vacancyDto);
-       }
+           }*/
+        //   vacancyDtoList.add(vacancyDto);
+     //  }*/
 
-      return vacancyDtoList;
+      return vacancyList.stream().map(vacancy ->new VacancyDto(vacancy)).collect(Collectors.toList());
+    //vacancyDtoList;
    }
 
    @Override
@@ -153,15 +156,19 @@ if (sortPagining.vacancy!=null) {
         Session session = sessionFactory.getCurrentSession();
         Vacancy vacancyOld =  session.byId(Vacancy.class).load(id);
         List<Requirement> requirementList =vacancyOld.getRequirementList();
-        for (String requirementName: requirements) {
-            Requirement requirement = new Requirement();
-            requirement.setName(requirementName);
-            session.save(requirement);
-            requirementList.add(requirement);
-        }
+
+        requirements.stream().forEach(requirementName->addRequirements(session, requirementList, requirementName));
+
         vacancyOld.setRequirementList(requirementList);
         session.update(vacancyOld);
         session.flush();
+    }
+
+    private void addRequirements(Session session, List<Requirement> requirementList, String requirementName) {
+        Requirement requirement = new Requirement();
+        requirement.setName(requirementName);
+        session.save(requirement);
+        requirementList.add(requirement);
     }
 
 }

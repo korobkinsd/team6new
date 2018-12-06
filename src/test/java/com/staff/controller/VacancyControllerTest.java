@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -34,9 +35,9 @@ class VacancyControllerTest {
         vacancy.setId((long)2035);
         vacancy.setPosition("Java");
         // vacancy.setIdDeveloper((long)0);
-        vacancy.setSalaryFrom((double) 0);
-        vacancy.setSalaryTo((double)0);
-        vacancy.setExperienceYearsRequire((double)0);
+        vacancy.setSalaryFrom((double) 2500);
+        vacancy.setSalaryTo((double)6000);
+        vacancy.setExperienceYearsRequire((double)5);
         return vacancy;
     }
     private VacancyDto generateVacancyDto() {
@@ -107,6 +108,13 @@ class VacancyControllerTest {
         controller.update((long) 101, vacancy);
 
         assertEquals("", "");
+    }
+    @Test
+    void main() {
+        List<Vacancy> vacancyArrayList=new ArrayList<Vacancy>();
+        vacancyArrayList.add(generateVacancy());
+        vacancyArrayList.add(generateVacancy());
+        List<VacancyDto> vacancyDtoList= vacancyArrayList.stream().map(vacancy ->new VacancyDto(vacancy)).collect(Collectors.toList());
     }
 
     @Test

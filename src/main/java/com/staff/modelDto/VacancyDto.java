@@ -1,9 +1,6 @@
 package com.staff.modelDto;
 
-import com.staff.model.Candidate;
-import com.staff.model.Requirement;
-import com.staff.model.User;
-import com.staff.model.Vacancy;
+import com.staff.model.*;
 
 import java.util.List;
 
@@ -18,6 +15,7 @@ public class VacancyDto {
     private User developer;
     private List<Requirement> requirementList;
     private List<Candidate> candidateList;
+    private List<Interview> interviewList;
 
 
     public Long getId() {
@@ -108,7 +106,8 @@ public class VacancyDto {
             this.developer.setVacancies(null);
         }
         this.requirementList=vacancy.getRequirementList();
-        this.candidateList=vacancy.getCandidateList();
+       // this.candidateList=vacancy.getCandidateList();
+       this.interviewList=vacancy.getInterviewList();
 
     }
 
@@ -126,5 +125,13 @@ public class VacancyDto {
 
     public void setCandidateList(List<Candidate> candidateList) {
         this.candidateList = candidateList;
+    }
+
+   public List<Interview> getInterviewList() {
+        return interviewList;
+    }
+
+    public void setInterviewList(List<Interview> interviewList) {
+        this.interviewList = interviewList;
     }
 }
