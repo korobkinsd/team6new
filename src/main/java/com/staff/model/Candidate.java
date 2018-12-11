@@ -63,9 +63,10 @@ public class Candidate {
     //@JoinColumn(name = "ID", referencedColumnName = "CANDIDATE_ID")   // , updatable = true, insertable = true
     //@JsonBackReference
     @JsonManagedReference
+    //@OrderColumn
     private List<ContactDetails> contactDetailsList;
 
-    @OneToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "candidate" )
+    @OneToMany( /*fetch = FetchType.LAZY,*/ cascade = CascadeType.ALL, mappedBy = "candidate" )
     @JsonManagedReference
     private List<Attachment> attachmentList;
 

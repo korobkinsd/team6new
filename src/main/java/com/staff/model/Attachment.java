@@ -3,12 +3,11 @@ package com.staff.model;
 
 import com.amazonaws.regions.Regions;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 
 
 @Entity
@@ -19,8 +18,8 @@ public class Attachment {
 
     public static final String CLIENT_REGION = Regions.US_EAST_2.getName();
     public static final String BUCKET_NAME = "team6new";
-    public static final String S3_ACCESS_KEY = "AKIAJSR7BQE5SDXGMHRQ";
-    public static final String  S3_SECRET_KEY = "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";
+    public static final String S3_ACCESS_KEY = "access_key";
+    public static final String  S3_SECRET_KEY = "secret_key";
     public static final int FIXED_BUFFER_SIZE = 1024*1024;
 
     @Id
@@ -30,10 +29,11 @@ public class Attachment {
 
     @NotNull(message="is required")
     @Column(name="ATTACHMENT_TYPE", nullable = false)
+    @Enumerated(EnumType.STRING)
     private AttachmentType attachmentType;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-    @JoinColumn(name = "CANDIDATE_ID", referencedColumnName = "ID")
+    @ManyToOne(/*fetch = FetchType.LAZY,*/ cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}) //, )
+    @JoinColumn(name = "CANDIDATE_ID", referencedColumnName = "ID", updatable = false, insertable = true)   //
     @JsonBackReference
     private Candidate candidate;
 

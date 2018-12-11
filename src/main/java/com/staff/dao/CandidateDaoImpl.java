@@ -44,7 +44,10 @@ public class CandidateDaoImpl implements CandidateDao {
 
     @Override
     public Candidate get(Long id) {
-        return sessionFactory.getCurrentSession().get(Candidate.class, id);
+        Candidate candidate = sessionFactory.getCurrentSession().get(Candidate.class, id);
+        int attachmentSize = candidate.getAttachmentList().size();
+        logger.debug("AttachmentSize=" + attachmentSize);
+        return candidate;
     }
 
     @Override
@@ -179,7 +182,11 @@ public class CandidateDaoImpl implements CandidateDao {
         Session session = sessionFactory.getCurrentSession();
         Candidate candidate = session.get(Candidate.class, candidateId);
         attachment.setCandidate(candidate);
-        List<Attachment> attachments = candidate.getAttachmentList();
+
+
+
+        //candidate.getAttachmentList().add(attachment);
+        /*List<Attachment> attachments = candidate.getAttachmentList();
         Iterator<Attachment> iter = attachments.iterator();
         while (iter.hasNext()) {
             Attachment attachmentOld = iter.next();
@@ -188,10 +195,16 @@ public class CandidateDaoImpl implements CandidateDao {
                 iter.remove();
                 //TODO: remove file from s3!
             }
-        }
-        attachments.add(attachment);
+        }*/
+        //attachments.add(attachment);
+        //session.update(attachments);
+
+        //candidate = session.get(Candidate.class, candidateId);
+        candidate.getAttachmentList().add(attachment);
+        //attachments.add(attachment);
         //candidate.getAttachmentList().clear();
         //candidate.setAttachmentList(attachments);
+        //session.(candidate);
         session.flush();
     }
 

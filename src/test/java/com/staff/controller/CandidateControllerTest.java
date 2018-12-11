@@ -11,6 +11,7 @@ import com.sun.jersey.multipart.FormDataBodyPart;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
+import org.springframework.web.multipart.MultipartFile;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.http.ResponseEntity;
 //import org.slf4j.Logger;
@@ -176,15 +177,17 @@ public class CandidateControllerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    public void uploadFileTest() throws IOException {
+    public void uploadFileTest() throws Exception {
         CandidateDao candidateDao = mock(CandidateDao.class);
         Candidate testCandidate = generateCandidate();
         when(candidateDao.get( anyLong() )).thenReturn( testCandidate );
         controller.setCandidateDao(candidateDao);
-        InputStream uploadedInputStream = mock(InputStream.class);
-        FormDataBodyPart content = mock(FormDataBodyPart.class);
+        //InputStream uploadedInputStream = mock(InputStream.class);
+        //FormDataBodyPart content = mock(FormDataBodyPart.class);
         //FormDataContentDisposition fileDetail = mock(FormDataContentDisposition.class);
-        controller.saveAttachment(1L, "CV", content, uploadedInputStream );
+        //controller.saveAttachment(1L, "CV", content, uploadedInputStream );
+        MultipartFile file = mock(MultipartFile.class);
+        controller.saveAttachment(1L, "CV", file );
     }
 
 }
