@@ -3,6 +3,8 @@ package com.staff.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -58,6 +60,11 @@ public class Vacancy  {
             joinColumns = { @JoinColumn(name = "VACANCY_ID") },
             inverseJoinColumns = { @JoinColumn(name = "CANDIDATE_ID") })
     private List<Candidate> candidateList;
+
+    @OneToMany( targetEntity=Interview.class,mappedBy = "vacancy")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnore
+    private List<Interview> interviewList;
 
     public void setDeveloper(User developer) {
         this.developer = developer;
@@ -170,9 +177,13 @@ public class Vacancy  {
     }
 
 
+    public List<Interview> getInterviewList() {
+        return interviewList;
+    }
 
-
-
+    public void setInterviewList(List<Interview> interviewList) {
+        this.interviewList = interviewList;
+    }
 }
 
 

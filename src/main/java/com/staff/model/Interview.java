@@ -1,5 +1,7 @@
 package com.staff.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
@@ -7,14 +9,25 @@ import java.util.Objects;
 @Entity
 @Table(name = "interview", schema = "team6")
 public class Interview {
-    private Long id;
-    private Long vacancy_id;
-    private Long candidate_id;
-    private Date plan_date;
-    private Date fact_date;
-
     @Id
     @Column(name = "id")
+    private Long id;
+    @Column(name = "vacancy_id")
+    private Long vacancy_id;
+    @Column(name = "candidate_id")
+    private Long candidate_id;
+    @Column(name = "plan_date")
+    private Date plan_date;
+
+    @Column(name = "fact_date")
+    private Date fact_date;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @JoinColumn(name="VACANCY_ID")
+    private Vacancy vacancy;
+
+
     public Long getId() {
         return id;
     }
@@ -22,7 +35,7 @@ public class Interview {
         this.id = id;
     }
 
-    @Column(name = "vacancy_id")
+
     public Long getVacancyId() {
         return vacancy_id;
     }
@@ -30,7 +43,7 @@ public class Interview {
         this.vacancy_id = vacancy_id;
     }
 
-    @Column(name = "candidate_id")
+
     public Long getCandidateId() {
         return candidate_id;
     }
@@ -38,7 +51,7 @@ public class Interview {
         this.candidate_id = candidate_id;
     }
 
-    @Column(name = "plan_date")
+
     public Date getPlanDate() {
         return plan_date;
     }
@@ -46,7 +59,7 @@ public class Interview {
         this.plan_date = plan_date;
     }
 
-    @Column(name = "fact_date")
+
     public Date getFactDate() {
         return fact_date;
     }
@@ -80,6 +93,11 @@ public class Interview {
     }
 
 
+    public Vacancy getVacancy() {
+        return vacancy;
+    }
 
-
+    public void setVacancy(Vacancy vacancy) {
+        this.vacancy = vacancy;
+    }
 }

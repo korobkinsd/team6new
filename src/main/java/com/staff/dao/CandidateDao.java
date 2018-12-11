@@ -4,7 +4,6 @@ import com.staff.model.Attachment;
 import com.staff.model.Candidate;
 import com.staff.util.filtering.CandidateFilter;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 

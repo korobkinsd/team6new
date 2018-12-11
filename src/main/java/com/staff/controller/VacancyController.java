@@ -52,21 +52,17 @@ public class VacancyController {
 
       Vacancy vacancyFilter =new Vacancy();
        vacancyFilter.setId(id);
-     //  vacancyFilter.setIdDeveloper(iddeveloper);
+
        vacancyFilter.setPosition(position);
        vacancyFilter.setSalaryFrom(salaryfrom);
        vacancyFilter.setSalaryTo(salaryto);
        vacancyFilter.setState(state);
        vacancyFilter.setExperienceYearsRequire(experienceyearsrequire);
        VacancyFilter sortPagining = new VacancyFilter( vacancyFilter ,columnName,order,pageNumber,pageSize);
-       //List<Vacancy> vacancys = vacancyDao.list(sortPagining);
+
        List<VacancyDto> vacancyDtoList = vacancyDao.list(sortPagining);
 
 
-         /*  for (Vacancy vacancy: vacancys){
-               VacancyDto vacancyDto =new VacancyDto(vacancy);
-               vacancyDtoList.add(vacancyDto);
-           }*/
 
 return vacancyDtoList;
 
