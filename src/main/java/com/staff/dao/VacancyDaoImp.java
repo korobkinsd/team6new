@@ -113,7 +113,7 @@ if (sortPagining.vacancy!=null) {
 
 
        List<Vacancy>  vacancyList= query.getResultList();
-       List<VacancyDto> vacancyDtoList = vacancyList.stream().map(vacancy ->new VacancyDto(vacancy)).collect(Collectors.toList());
+       //List<VacancyDto> vacancyDtoList = vacancyList.stream().map(vacancy ->new VacancyDto(vacancy)).collect(Collectors.toList());
 
 
       /* for (Vacancy vacancy: vacancyList){
