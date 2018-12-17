@@ -51,6 +51,11 @@ public class AppConfig {
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));   // none
         hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));     // org.hibernate.dialect.MySQL5Dialect
+
+        hibernateProperties.setProperty("hibernate.connection.CharSet", env.getProperty("hibernate.connection.CharSet"));
+        hibernateProperties.setProperty("hibernate.connection.characterEncoding", env.getProperty("hibernate.connection.characterEncoding"));
+        hibernateProperties.setProperty("hibernate.connection.useUnicode", env.getProperty("hibernate.connection.useUnicode"));
+
         return hibernateProperties;
     }
 
